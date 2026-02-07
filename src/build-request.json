@@ -1,0 +1,76 @@
+{
+  "kind": "build_request",
+  "title": "Improve typography by adding a brighter font and higher-contrast text styling",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-30",
+      "text": "Add a modern sans-serif web font for the app and apply it globally so all text uses the new font consistently across Login, Calendar, Daily, and Settings views.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-9"
+        ],
+        "quotes": [
+          "add font and letter are bright"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A web font is loaded from a reliable source (e.g., via a <link> in frontend/index.html) and applied globally (e.g., on body/html) without breaking layout.",
+        "Text across the app (headings, paragraphs, buttons, inputs) renders in the new font on refresh.",
+        "No user-facing strings are changed; only typography styling changes."
+      ]
+    },
+    {
+      "id": "REQ-31",
+      "text": "Increase overall text brightness/legibility by adjusting the global color tokens used for text (foreground, muted-foreground, and card-foreground) and ensuring readable contrast on glassmorphism cards and over background images in both light and dark themes.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-9"
+        ],
+        "quotes": [
+          "add font and letter are bright"
+        ]
+      },
+      "acceptanceCriteria": [
+        "In light theme, general body text and UI labels appear darker/clearer (higher contrast) on light card/background surfaces.",
+        "In dark theme, general body text and UI labels remain bright and readable on dark card/background surfaces.",
+        "Muted text (e.g., text-muted-foreground used in descriptions and helper text) is still visually secondary but noticeably more legible than before.",
+        "LoginScreen informational paragraphs (currently using text-muted-foreground) remain readable against the background image and glass-card styling.",
+        "Calendar weekday headers (text-muted-foreground) and task controls/icons using muted text remain readable."
+      ]
+    },
+    {
+      "id": "REQ-32",
+      "text": "Improve perceived text clarity by adding global typographic rendering enhancements (e.g., font smoothing and consistent letter rendering) without changing any existing app behavior or animations.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-9"
+        ],
+        "quotes": [
+          "add font and letter are bright"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Global CSS includes font rendering improvements (e.g., antialiasing/font-smoothing) applied at the document/body level.",
+        "No changes to planner data, LocalStorage logic, authentication flow, routing, or animations occur as a result of the typography changes."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify files under frontend/src/components/ui (shadcn components are read-only).",
+    "Keep all user-facing text in English and do not change existing copy; only adjust styling/typography.",
+    "Do not change authentication logic (Internet Identity), LocalStorage persistence, or navigation behavior."
+  ],
+  "nonGoals": [
+    "Adding new screens or features beyond typography/contrast improvements.",
+    "Changing background images, overlays, or month-image mapping behavior.",
+    "Altering task CRUD behavior or stored data formats."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

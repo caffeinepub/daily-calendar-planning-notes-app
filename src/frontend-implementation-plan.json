@@ -1,0 +1,66 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Global typography refresh: modern web font, higher-contrast tokens, and improved font rendering",
+  "requirements": [
+    {
+      "id": "REQ-30",
+      "summary": "Load a modern sans-serif web font and apply it globally across all views (Login, Calendar, Daily, Settings).",
+      "acceptanceCriteria": [
+        "A web font is loaded from a reliable source (e.g., via a <link> in frontend/index.html) and applied globally (e.g., on body/html) without breaking layout.",
+        "Text across the app (headings, paragraphs, buttons, inputs) renders in the new font on refresh.",
+        "No user-facing strings are changed; only typography styling changes."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Add a reliable web-font <link> (and any required preconnects) in the document <head> so the font loads on first paint across the app."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Apply the new font globally via document/body-level font-family (and optionally a CSS variable) so all text (including shadcn/ui components without modifying frontend/src/components/ui) uses the new font consistently."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Configure Tailwind's default sans font stack to include the new web font so existing Tailwind typography utilities continue to map to the new font across the app."
+        }
+      ]
+    },
+    {
+      "id": "REQ-31",
+      "summary": "Increase text contrast by adjusting global text color tokens for foreground, muted-foreground, and card-foreground in light and dark themes.",
+      "acceptanceCriteria": [
+        "In light theme, general body text and UI labels appear darker/clearer (higher contrast) on light card/background surfaces.",
+        "In dark theme, general body text and UI labels remain bright and readable on dark card/background surfaces.",
+        "Muted text (e.g., text-muted-foreground used in descriptions and helper text) is still visually secondary but noticeably more legible than before.",
+        "LoginScreen informational paragraphs (currently using text-muted-foreground) remain readable against the background image and glass-card styling.",
+        "Calendar weekday headers (text-muted-foreground) and task controls/icons using muted text remain readable."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Tune the OKLCH theme tokens for --foreground, --muted-foreground, and --card-foreground (and their .dark equivalents) to improve perceived brightness/legibility on glassmorphism cards and over background-image overlays, without changing layouts, copy, or behavior."
+        }
+      ]
+    },
+    {
+      "id": "REQ-32",
+      "summary": "Add global font-rendering enhancements (smoothing/kerning) to improve perceived text clarity without affecting app behavior or animations.",
+      "acceptanceCriteria": [
+        "Global CSS includes font rendering improvements (e.g., antialiasing/font-smoothing) applied at the document/body level.",
+        "No changes to planner data, LocalStorage logic, authentication flow, routing, or animations occur as a result of the typography changes."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Add document/body-level font-rendering enhancements (e.g., -webkit-font-smoothing, -moz-osx-font-smoothing, text-rendering) to improve clarity while keeping all existing animations and application logic unchanged."
+        }
+      ]
+    }
+  ]
+}

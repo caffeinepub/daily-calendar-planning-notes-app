@@ -1,0 +1,61 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-add-a-modern-sans-serif-web-font-for-the-app-and-apply-it-globally-so-all-text-uses-the-new-font-consistently-across-login-calendar-daily-and-settings-views",
+      "featureTitle": "Add a modern sans-serif web font for the app and apply it globally so all text uses the new font consistently across Login, Calendar, Daily, and Settings views.",
+      "files": [
+        "frontend/index.html",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-30"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-increase-overall-text-brightness-legibility-by-adjusting-the-global-color-tokens-used-for-text-foreground-muted-foreground-and-card-foreground-and-ensuring-readable-contrast-on-glassmorphism-cards-and-over-background-images-in-both-light-and-dark-themes",
+      "featureTitle": "Increase overall text brightness/legibility by adjusting the global color tokens used for text (foreground, muted-foreground, and card-foreground) and ensuring readable contrast on glassmorphism cards and over background images in both light and dark themes.",
+      "files": [
+        "frontend/src/index.css"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-31"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-improve-perceived-text-clarity-by-adding-global-typographic-rendering-enhancements-e-g-font-smoothing-and-consistent-letter-rendering-without-changing-any-existing-app-behavior-or-animations",
+      "featureTitle": "Improve perceived text clarity by adding global typographic rendering enhancements (e.g., font smoothing and consistent letter rendering) without changing any existing app behavior or animations.",
+      "files": [
+        "frontend/src/index.css"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-32"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

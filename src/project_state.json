@@ -1,0 +1,359 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 21,
+  "summary": "Shift to a responsive, front-end-only Daily Planner Calendar website built with semantic HTML, CSS (Grid/Flexbox, variables), and vanilla JavaScript, using LocalStorage for per-date tasks/notes (no authenticated backend).",
+  "architectural_notes": [
+    "Front-end-only implementation using vanilla JS with LocalStorage persistence (no authenticated per-user backend).",
+    "Login page should remain front-end-only (no real authentication/backend); treat as a UI gate/landing screen unless requirements change."
+  ],
+  "known_issues": [
+    "Prior deployment attempt failed; nothing is live yet (deployment snag)."
+  ],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-calendar-ui-that-lets-a-signed-in-user-navigate-months-select-a-day-and-view-whether-that-day-has-an-existing-note",
+      "title": "Create a calendar UI that lets a signed-in user navigate months, select a day, and view whether that day has an existing note.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-day-detail-editing-for-daily-plan-notes-create-a-new-note-for-the-selected-day-edit-existing-note-fields-and-delete-a-note-with-clear-loading-success-error-states",
+      "title": "Add day detail editing for daily plan notes: create a new note for the selected day, edit existing note fields, and delete a note, with clear loading/success/error states.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-notes-list-view-with-basic-filtering-that-helps-users-find-entries-by-date-range-and-simple-text-search-across-title-body",
+      "title": "Add a notes list view with basic filtering that helps users find entries (by date range and simple text search across title/body).",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-establish-a-coherent-visual-theme-and-layout-for-the-app-typography-spacing-component-styling-and-apply-it-consistently-across-calendar-day-detail-and-list-views",
+      "title": "Establish a coherent visual theme and layout for the app (typography, spacing, component styling) and apply it consistently across calendar, day detail, and list views.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-app-usable-as-a-front-end-only-daily-planner-by-persisting-all-calendar-day-plan-data-in-browser-localstorage-no-backend-dependency-required-for-creating-editing-or-deleting-tasks-notes-data-must-automatically-load-on-app-start-and-automatically-save-after-each-change",
+      "title": "Make the app usable as a front-end-only daily planner by persisting all calendar/day-plan data in browser LocalStorage (no backend dependency required for creating, editing, or deleting tasks/notes). Data must automatically load on app start and automatically save after each change.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-a-monthly-calendar-view-that-is-generated-dynamically-in-the-ui-supports-navigating-between-months-highlights-today-s-date-and-visually-indicates-days-that-have-saved-tasks-notes-in-localstorage",
+      "title": "Provide a monthly calendar view that is generated dynamically in the UI, supports navigating between months, highlights today’s date, and visually indicates days that have saved tasks/notes in LocalStorage.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-daily-planning-view-that-opens-when-a-user-selects-a-date-from-the-calendar-and-supports-adding-editing-and-deleting-tasks-notes-organized-into-three-time-of-day-sections-morning-afternoon-evening",
+      "title": "Implement a daily planning view that opens when a user selects a date from the calendar, and supports adding, editing, and deleting tasks/notes organized into three time-of-day sections: Morning, Afternoon, Evening.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-clean-modern-soft-pastel-ui-theme-using-css-variables-with-rounded-cards-buttons-and-responsive-layout-using-css-grid-and-flexbox-use-semantic-html-elements-for-structure-and-keep-all-user-facing-text-in-english",
+      "title": "Apply a clean, modern, soft pastel UI theme using CSS variables, with rounded cards/buttons and responsive layout using CSS Grid and Flexbox. Use semantic HTML elements for structure and keep all user-facing text in English.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-ui-ux-interactions-and-animations-smooth-transition-between-calendar-and-daily-views-hover-effects-on-calendar-dates-slide-in-animation-when-adding-tasks-and-fade-out-animation-when-deleting-tasks-include-simple-navigation-with-clear-icons-for-moving-between-calendar-and-daily-view",
+      "title": "Add UI/UX interactions and animations: smooth transition between calendar and daily views, hover effects on calendar dates, slide-in animation when adding tasks, and fade-out animation when deleting tasks. Include simple navigation with clear icons for moving between calendar and daily view.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-dedicated-login-screen-that-gates-access-to-the-planner-ui-using-the-existing-internet-identity-context-and-only-render-the-calendar-daily-planner-once-the-user-has-a-non-anonymous-identity",
+      "title": "Add a dedicated login screen that gates access to the planner UI using the existing Internet Identity context, and only render the calendar/daily planner once the user has a non-anonymous identity.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-an-in-app-logout-control-in-the-authenticated-planner-ui-header-that-clears-the-current-internet-identity-session-using-the-existing-identity-hook-and-returns-the-user-to-the-login-screen",
+      "title": "Provide an in-app logout control in the authenticated planner UI header that clears the current Internet Identity session using the existing identity hook and returns the user to the login screen.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-more-ui-animations-beyond-the-current-set-focusing-on-additional-micro-interactions-across-calendar-and-daily-planning-views-while-respecting-prefers-reduced-motion",
+      "title": "Add more UI animations beyond the current set, focusing on additional micro-interactions across calendar and daily planning views while respecting prefers-reduced-motion.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-simple-profile-page-that-is-accessible-after-successful-internet-identity-login-and-provide-a-clear-navigation-control-to-open-it-from-the-authenticated-app-header",
+      "title": "Add a simple Profile page that is accessible after successful Internet Identity login, and provide a clear navigation control to open it from the authenticated app header.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-global-color-styles-and-background-styling-to-create-a-refreshed-cohesive-theme-applied-consistently-across-the-login-screen-header-calendar-view-daily-view-and-footer",
+      "title": "Update the global color styles and background styling to create a refreshed, cohesive theme applied consistently across the login screen, header, calendar view, daily view, and footer.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-recreate-redesign-the-sign-in-login-page-ui-while-keeping-the-existing-internet-identity-login-logic-loading-state-and-error-handling-behavior-intact",
+      "title": "Recreate/redesign the sign-in (login) page UI while keeping the existing Internet Identity login logic, loading state, and error handling behavior intact.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-login-screen-ui-to-visually-match-the-uploaded-glassmorphism-login-form-reference-by-applying-a-translucent-blurred-backdrop-filter-card-treatment-subtle-light-borders-and-a-stronger-background-visual-layer-while-keeping-the-existing-internet-identity-login-logic-loading-state-and-error-handling-behavior-intact",
+      "title": "Update the Login screen UI to visually match the uploaded “glassmorphism login form” reference by applying a translucent, blurred (backdrop-filter) card treatment, subtle light borders, and a stronger background visual layer, while keeping the existing Internet Identity login logic, loading state, and error handling behavior intact.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-more-informational-content-to-the-login-screen-to-help-first-time-users-including-1-a-short-how-it-works-section-explaining-internet-identity-at-a-high-level-no-passwords-2-a-data-privacy-section-clarifying-that-planner-data-is-stored-locally-in-the-browser-and-3-a-small-getting-started-checklist-e-g-sign-in-pick-a-date-add-tasks-placed-on-the-login-page-without-cluttering-the-primary-call-to-action",
+      "title": "Add more informational content to the Login screen to help first-time users, including: (1) a short “How it works” section explaining Internet Identity at a high level (no passwords), (2) a “Data & privacy” section clarifying that planner data is stored locally in the browser, and (3) a small “Getting started” checklist (e.g., sign in, pick a date, add tasks) placed on the login page without cluttering the primary call-to-action.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-generated-scenic-background-image-suitable-for-a-glassmorphism-login-layout-and-render-it-as-a-static-asset-on-the-login-screen-served-from-frontend-public-assets-generated-with-appropriate-overlays-to-preserve-text-contrast",
+      "title": "Add a generated scenic background image suitable for a glassmorphism login layout and render it as a static asset on the Login screen (served from frontend/public/assets/generated) with appropriate overlays to preserve text contrast.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-convert-the-existing-authenticated-profile-page-into-a-settings-area-that-still-shows-the-internet-identity-principal-and-local-storage-privacy-information-but-is-organized-as-a-settings-hub-with-clearly-labeled-sections-and-room-for-additional-options",
+      "title": "Convert the existing authenticated \"Profile\" page into a \"Settings\" area that still shows the Internet Identity principal and local-storage privacy information, but is organized as a settings hub with clearly labeled sections and room for additional options.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-user-configurable-settings-controls-within-the-new-settings-area-and-persist-those-preferences-in-browser-localstorage-including-1-a-theme-preference-control-system-light-dark-2-a-reduced-motion-preference-control-system-on-off-that-complements-existing-prefers-reduced-motion-handling-and-3-planner-data-management-actions-export-planner-data-as-a-json-download-import-planner-data-from-a-json-file-with-validation-and-clear-all-planner-data-with-a-confirmation-step",
+      "title": "Add user-configurable settings controls within the new Settings area and persist those preferences in browser LocalStorage, including: (1) a theme preference control (System/Light/Dark), (2) a reduced-motion preference control (System/On/Off) that complements existing prefers-reduced-motion handling, and (3) planner data management actions (Export planner data as a JSON download, Import planner data from a JSON file with validation, and Clear all planner data with a confirmation step).",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-authenticated-navigation-to-treat-settings-as-a-first-class-destination-keep-the-existing-header-entry-point-but-rename-it-from-profile-to-settings-and-ensure-the-back-button-behavior-remains-correct-when-returning-to-the-planner",
+      "title": "Update authenticated navigation to treat \"Settings\" as a first-class destination: keep the existing header entry point but rename it from \"Profile\" to \"Settings\" and ensure the back button behavior remains correct when returning to the planner.",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-enhance-page-view-transition-animations-between-calendar-daily-and-settings-views-so-that-navigation-feels-more-responsive-and-polished-e-g-subtle-slide-fade-while-keeping-the-existing-navigation-logic-intact",
+      "title": "Enhance page/view transition animations between Calendar, Daily, and Settings views so that navigation feels more responsive and polished (e.g., subtle slide + fade), while keeping the existing navigation logic intact.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-additional-micro-interactions-to-the-monthly-calendar-ui-to-improve-tactile-feedback-e-g-press-states-focus-visible-styling-consistency-and-a-subtle-selection-feedback-when-a-day-is-clicked-without-changing-calendar-functionality",
+      "title": "Add additional micro-interactions to the Monthly Calendar UI to improve tactile feedback (e.g., press states, focus-visible styling consistency, and a subtle selection feedback when a day is clicked), without changing calendar functionality.",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-additional-micro-interactions-to-the-daily-plan-task-workflow-add-edit-delete-beyond-the-existing-enter-delete-animations-focusing-on-clarity-and-responsiveness-e-g-input-focus-transitions-inline-edit-open-close-motion-and-button-feedback-without-changing-crud-behavior-or-stored-data",
+      "title": "Add additional micro-interactions to the Daily Plan task workflow (add/edit/delete) beyond the existing enter/delete animations, focusing on clarity and responsiveness (e.g., input focus transitions, inline edit open/close motion, and button feedback), without changing CRUD behavior or stored data.",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-subtle-micro-interactions-to-the-settings-screen-controls-theme-selector-motion-selector-import-export-clear-actions-to-improve-perceived-quality-e-g-section-entrance-timing-consistency-button-selector-feedback-while-keeping-all-existing-logic-and-text-unchanged",
+      "title": "Add subtle micro-interactions to the Settings screen controls (theme selector, motion selector, import/export/clear actions) to improve perceived quality (e.g., section entrance timing consistency, button/selector feedback), while keeping all existing logic and text unchanged.",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-sign-in-login-screen-background-to-use-the-user-uploaded-image-image-1-png-as-the-scenic-background-layer-behind-the-glassmorphism-ui-while-keeping-the-existing-internet-identity-login-behavior-loading-state-error-handling-and-existing-contrast-overlays-intact",
+      "title": "Update the Sign-in (Login) screen background to use the user-uploaded image (image-1.png) as the scenic background layer behind the glassmorphism UI, while keeping the existing Internet Identity login behavior, loading state, error handling, and existing contrast overlays intact.",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-support-for-per-month-background-images-by-creating-a-month-to-image-mapping-and-using-it-to-select-the-correct-background-image-based-on-the-currently-active-month-in-the-ui-calendar-view-displayed-month-daily-view-selecteddate-month-settings-view-current-date-month-if-a-month-image-is-missing-unavailable-fall-back-to-the-existing-assets-image-1-png-background",
+      "title": "Add support for per-month background images by creating a month-to-image mapping and using it to select the correct background image based on the currently active month in the UI (Calendar view: displayed month; Daily view: selectedDate month; Settings view: current date month). If a month image is missing/unavailable, fall back to the existing /assets/image-1.png background.",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-render-the-month-specific-background-images-as-static-frontend-assets-served-from-frontend-public-assets-generated-and-integrate-them-into-the-existing-background-layer-approach-used-on-the-login-screen-background-image-contrast-overlays-ensuring-text-contrast-remains-readable-in-both-light-and-dark-themes",
+      "title": "Render the month-specific background images as static frontend assets (served from frontend/public/assets/generated) and integrate them into the existing background layer approach used on the Login screen (background image + contrast overlays), ensuring text contrast remains readable in both light and dark themes.",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-modern-sans-serif-web-font-for-the-app-and-apply-it-globally-so-all-text-uses-the-new-font-consistently-across-login-calendar-daily-and-settings-views",
+      "title": "Add a modern sans-serif web font for the app and apply it globally so all text uses the new font consistently across Login, Calendar, Daily, and Settings views.",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-increase-overall-text-brightness-legibility-by-adjusting-the-global-color-tokens-used-for-text-foreground-muted-foreground-and-card-foreground-and-ensuring-readable-contrast-on-glassmorphism-cards-and-over-background-images-in-both-light-and-dark-themes",
+      "title": "Increase overall text brightness/legibility by adjusting the global color tokens used for text (foreground, muted-foreground, and card-foreground) and ensuring readable contrast on glassmorphism cards and over background images in both light and dark themes.",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-improve-perceived-text-clarity-by-adding-global-typographic-rendering-enhancements-e-g-font-smoothing-and-consistent-letter-rendering-without-changing-any-existing-app-behavior-or-animations",
+      "title": "Improve perceived text clarity by adding global typographic rendering enhancements (e.g., font smoothing and consistent letter rendering) without changing any existing app behavior or animations.",
+      "reqIds": [
+        "REQ-32"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create a calendar app that supports daily plan/notes entries",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Add daily planning view for a selected date with task/notes CRUD, organized into Morning/Afternoon/Evening sections.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Implement LocalStorage-based persistence keyed by date for tasks/notes (save and load automatically).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Apply responsive modern UI/UX: soft pastel theme, rounded cards/buttons, clear icon navigation, highlight today’s date.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Add UI animations: smooth transitions between calendar and daily view, hover effects on dates, slide-in on task add, fade-out on delete.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Add a login page/screen (front-end only) to gate access to the planner UI; no authenticated backend implied.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Expand UI animations beyond current set (additional micro-interactions/transitions across views and controls).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Add a simple profile page to the app (accessible after login).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Update the app color styles, including adding/updating background styling (refresh visual theme).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Recreate/redesign the sign-in (login) page UI while keeping it front-end-only (no real authentication backend).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Enhance the login page by adding more informational content (e.g., guidance/help text or app info) as needed.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Expand the user Profile page into a Settings area (\"more settings\") with additional user-configurable options accessible after login.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Add a background image/visual layer to the sign-in page (use the provided asset as the login background).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Support per-month background images (allow different background images to be used depending on the current month).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Adjust typography styling so fonts/letters appear brighter (improve text color/contrast/legibility across the UI).",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Daily calendar planning notes app",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
