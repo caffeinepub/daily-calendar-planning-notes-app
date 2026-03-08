@@ -1,0 +1,37 @@
+{
+  "kind": "build_request",
+  "title": "Brighten global text font color",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Increase the perceived brightness of text across the app by adjusting the global theme color tokens used for typography (at minimum: --foreground, --card-foreground, --popover-foreground, and --muted-foreground) in the active Tailwind base stylesheet (frontend/src/index.css). Ensure the change improves readability on top of the background image overlays and glass cards without breaking light/dark theme behavior.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "make the text font color bright"
+        ]
+      },
+      "acceptanceCriteria": [
+        "In both light and dark themes, default text (text-foreground) renders with a visibly brighter appearance than before.",
+        "Secondary/help text (text-muted-foreground), such as the descriptive paragraphs on the login screen, is brighter and easier to read against the background overlays.",
+        "No text becomes unreadable due to insufficient contrast (e.g., light text on light backgrounds) in common screens: login, calendar, daily view, and settings."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify files under frontend/src/components/ui (read-only UI component sources).",
+    "Do not edit immutable hook/bootstrapping files (e.g., frontend/src/main.tsx, frontend/src/hooks/useInternetIdentity.ts(x), frontend/src/hooks/useActor.ts)."
+  ],
+  "nonGoals": [
+    "Changing font family, font size, or typography layout.",
+    "Adding new theme modes beyond the existing light/dark preference."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

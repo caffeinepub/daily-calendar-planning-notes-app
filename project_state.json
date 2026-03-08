@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "New project",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-increase-the-perceived-brightness-of-text-across-the-app-by-adjusting-the-global-theme-color-tokens-used-for-typography-at-minimum-foreground-card-foreground-popover-foreground-and-muted-foreground-in-the-active-tailwind-base-stylesheet-frontend-src-index-css-ensure-the-change-improves-readability-on-top-of-the-background-image-overlays-and-glass-cards-without-breaking-light-dark-theme-behavior",
+      "title": "Increase the perceived brightness of text across the app by adjusting the global theme color tokens used for typography (at minimum: --foreground, --card-foreground, --popover-foreground, and --muted-foreground) in the active Tailwind base stylesheet (frontend/src/index.css). Ensure the change improves readability on top of the background image overlays and glass cards without breaking light/dark theme behavior.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Make the text font color bright",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Brighten global text font color",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

@@ -1,0 +1,425 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 98% 0.01 264;
+    --foreground: 8% 0.02 264;
+    --card: 98% 0.01 264;
+    --card-foreground: 10% 0.02 264;
+    --popover: 98% 0.01 264;
+    --popover-foreground: 8% 0.02 264;
+    --primary: 58% 0.18 264;
+    --primary-foreground: 98% 0.01 264;
+    --secondary: 92% 0.02 264;
+    --secondary-foreground: 10% 0.02 264;
+    --muted: 92% 0.02 264;
+    --muted-foreground: 28% 0.03 264;
+    --accent: 65% 0.15 330;
+    --accent-foreground: 98% 0.01 264;
+    --destructive: 55% 0.20 25;
+    --destructive-foreground: 98% 0.01 264;
+    --border: 88% 0.02 264;
+    --input: 88% 0.02 264;
+    --ring: 58% 0.18 264;
+    --chart-1: 60% 0.15 12;
+    --chart-2: 65% 0.18 142;
+    --chart-3: 55% 0.16 0;
+    --chart-4: 70% 0.14 283;
+    --chart-5: 62% 0.17 340;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 18% 0.02 264;
+    --foreground: 98% 0.01 264;
+    --card: 20% 0.02 264;
+    --card-foreground: 98% 0.01 264;
+    --popover: 20% 0.02 264;
+    --popover-foreground: 98% 0.01 264;
+    --primary: 65% 0.18 264;
+    --primary-foreground: 18% 0.02 264;
+    --secondary: 28% 0.02 264;
+    --secondary-foreground: 98% 0.01 264;
+    --muted: 28% 0.02 264;
+    --muted-foreground: 82% 0.03 264;
+    --accent: 70% 0.15 330;
+    --accent-foreground: 18% 0.02 264;
+    --destructive: 60% 0.20 25;
+    --destructive-foreground: 98% 0.01 264;
+    --border: 32% 0.02 264;
+    --input: 32% 0.02 264;
+    --ring: 65% 0.18 264;
+    --chart-1: 65% 0.15 12;
+    --chart-2: 70% 0.18 142;
+    --chart-3: 60% 0.16 0;
+    --chart-4: 75% 0.14 283;
+    --chart-5: 67% 0.17 340;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'kern' 1;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  }
+}
+
+/* ===== View Transitions ===== */
+@keyframes view-slide-in-forward {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes view-slide-in-back {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.view-transition {
+  animation-duration: 300ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+.view-transition-enter.view-transition-forward {
+  animation-name: view-slide-in-forward;
+}
+
+.view-transition-enter.view-transition-back {
+  animation-name: view-slide-in-back;
+}
+
+/* ===== Calendar Animations ===== */
+@keyframes calendar-day-select {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.92);
+    box-shadow: 0 0 0 4px oklch(var(--primary) / 0.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.calendar-day-selected {
+  animation: calendar-day-select 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.calendar-day {
+  position: relative;
+}
+
+.calendar-day:active {
+  transform: scale(0.95);
+}
+
+.calendar-day:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px oklch(var(--background)), 0 0 0 4px oklch(var(--ring));
+}
+
+.calendar-nav-btn:active {
+  transform: scale(0.95);
+}
+
+.calendar-nav-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px oklch(var(--ring));
+}
+
+/* Month transition animations */
+@keyframes month-slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes month-slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.month-transition-left {
+  animation: month-slide-left 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.month-transition-right {
+  animation: month-slide-right 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== Task Animations ===== */
+@keyframes task-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes task-delete {
+  to {
+    opacity: 0;
+    transform: translateX(-100%) scale(0.8);
+  }
+}
+
+@keyframes task-edit-expand {
+  from {
+    opacity: 0;
+    transform: scaleY(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+.task-item-entering {
+  animation: task-enter 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.task-item-deleting {
+  animation: task-delete 300ms cubic-bezier(0.4, 0, 0.6, 1) forwards;
+}
+
+.task-edit-mode {
+  animation: task-edit-expand 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: top;
+}
+
+.task-control-btn:active {
+  transform: scale(0.9);
+}
+
+.task-control-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px oklch(var(--ring));
+}
+
+.task-input:focus {
+  border-color: oklch(var(--ring));
+}
+
+/* ===== Section Entrance Animations ===== */
+@keyframes section-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-entrance {
+  animation: section-entrance 400ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ===== Settings Animations ===== */
+@keyframes settings-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes settings-section-entrance {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.settings-entrance {
+  animation: settings-entrance 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.settings-section {
+  animation: settings-section-entrance 300ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.settings-control:active {
+  transform: scale(0.98);
+}
+
+.settings-control:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px oklch(var(--ring));
+}
+
+.settings-action-btn:hover {
+  transform: scale(1.05);
+}
+
+.settings-action-btn:active {
+  transform: scale(0.95);
+}
+
+.settings-action-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px oklch(var(--ring));
+}
+
+/* ===== Button Interactions ===== */
+.btn-interactive {
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-interactive:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px oklch(var(--primary) / 0.15);
+}
+
+.btn-interactive:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 4px oklch(var(--primary) / 0.1);
+}
+
+.btn-interactive:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px oklch(var(--background)), 0 0 0 4px oklch(var(--ring));
+}
+
+/* ===== Login Background Animation ===== */
+@keyframes login-bg-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.05);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+}
+
+.login-bg-animated {
+  animation: login-bg-float 20s ease-in-out infinite;
+}
+
+/* ===== Reduced Motion Support ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .view-transition,
+  .calendar-day-selected,
+  .month-transition-left,
+  .month-transition-right,
+  .task-item-entering,
+  .task-item-deleting,
+  .task-edit-mode,
+  .section-entrance,
+  .settings-entrance,
+  .settings-section,
+  .login-bg-animated {
+    animation: none !important;
+  }
+
+  .btn-interactive:hover,
+  .calendar-day:hover,
+  .task-control-btn:active,
+  .settings-action-btn:hover,
+  .settings-action-btn:active {
+    transform: none !important;
+  }
+}
+
+/* User preference override for reduced motion */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+.reduce-motion .view-transition,
+.reduce-motion .calendar-day-selected,
+.reduce-motion .month-transition-left,
+.reduce-motion .month-transition-right,
+.reduce-motion .task-item-entering,
+.reduce-motion .task-item-deleting,
+.reduce-motion .task-edit-mode,
+.reduce-motion .section-entrance,
+.reduce-motion .settings-entrance,
+.reduce-motion .settings-section,
+.reduce-motion .login-bg-animated {
+  animation: none !important;
+}
+
+.reduce-motion .btn-interactive:hover,
+.reduce-motion .calendar-day:hover,
+.reduce-motion .task-control-btn:active,
+.reduce-motion .settings-action-btn:hover,
+.reduce-motion .settings-action-btn:active {
+  transform: none !important;
+}
+
+/* ===== Glassmorphism Utilities ===== */
+.glass-card {
+  background: oklch(var(--card) / 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid oklch(var(--border) / 0.5);
+}
+
+.glass-header {
+  background: oklch(var(--card) / 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}

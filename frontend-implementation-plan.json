@@ -1,0 +1,23 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Brighten global typography color tokens",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Increase perceived brightness and readability of global text by tuning core typography theme tokens in the Tailwind base stylesheet while preserving light/dark behavior.",
+      "acceptanceCriteria": [
+        "In both light and dark themes, default text (text-foreground) renders with a visibly brighter appearance than before.",
+        "Secondary/help text (text-muted-foreground), such as the descriptive paragraphs on the login screen, is brighter and easier to read against the background overlays.",
+        "No text becomes unreadable due to insufficient contrast (e.g., light text on light backgrounds) in common screens: login, calendar, daily view, and settings."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Adjust the OKLCH values for the global typography-related CSS variables (at minimum: --foreground, --card-foreground, --popover-foreground, --muted-foreground) in both :root (light) and .dark (dark) to increase perceived text brightness while maintaining adequate contrast on glass cards and over background image overlays. Keep changes limited to this file to respect read-only UI component sources and immutable bootstrapping/hooks constraints."
+        }
+      ]
+    }
+  ]
+}
