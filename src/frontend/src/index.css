@@ -5,20 +5,20 @@
 @layer base {
   :root {
     --background: 98% 0.01 264;
-    --foreground: 12% 0.02 264;
+    --foreground: 8% 0.02 264;
     --card: 98% 0.01 264;
-    --card-foreground: 15% 0.02 264;
+    --card-foreground: 10% 0.02 264;
     --popover: 98% 0.01 264;
-    --popover-foreground: 12% 0.02 264;
+    --popover-foreground: 8% 0.02 264;
     --primary: 58% 0.18 264;
     --primary-foreground: 98% 0.01 264;
     --secondary: 92% 0.02 264;
-    --secondary-foreground: 15% 0.02 264;
+    --secondary-foreground: 10% 0.02 264;
     --muted: 92% 0.02 264;
-    --muted-foreground: 38% 0.03 264;
+    --muted-foreground: 28% 0.03 264;
     --accent: 65% 0.15 330;
     --accent-foreground: 98% 0.01 264;
-    --destructive: 55% 0.20 25;
+    --destructive: 55% 0.2 25;
     --destructive-foreground: 98% 0.01 264;
     --border: 88% 0.02 264;
     --input: 88% 0.02 264;
@@ -33,20 +33,20 @@
 
   .dark {
     --background: 18% 0.02 264;
-    --foreground: 96% 0.01 264;
+    --foreground: 98% 0.01 264;
     --card: 20% 0.02 264;
-    --card-foreground: 95% 0.01 264;
+    --card-foreground: 98% 0.01 264;
     --popover: 20% 0.02 264;
-    --popover-foreground: 96% 0.01 264;
+    --popover-foreground: 98% 0.01 264;
     --primary: 65% 0.18 264;
     --primary-foreground: 18% 0.02 264;
     --secondary: 28% 0.02 264;
-    --secondary-foreground: 95% 0.01 264;
+    --secondary-foreground: 98% 0.01 264;
     --muted: 28% 0.02 264;
-    --muted-foreground: 72% 0.03 264;
+    --muted-foreground: 82% 0.03 264;
     --accent: 70% 0.15 330;
     --accent-foreground: 18% 0.02 264;
-    --destructive: 60% 0.20 25;
+    --destructive: 60% 0.2 25;
     --destructive-foreground: 98% 0.01 264;
     --border: 32% 0.02 264;
     --input: 32% 0.02 264;
@@ -64,15 +64,19 @@
     @apply border-border;
   }
   html {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+      "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    font-feature-settings: 'kern' 1;
+    font-feature-settings: "kern" 1;
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+      "Helvetica Neue", sans-serif;
   }
 }
 
@@ -331,7 +335,8 @@
 
 /* ===== Login Background Animation ===== */
 @keyframes login-bg-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(0, 0) scale(1);
   }
   33% {

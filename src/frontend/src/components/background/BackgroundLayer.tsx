@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { getFallbackBackgroundUrl } from '../../features/background/monthBackgrounds';
+import { useEffect, useState } from "react";
+import { getFallbackBackgroundUrl } from "../../features/background/monthBackgrounds";
 
 interface BackgroundLayerProps {
   imageUrl: string;
@@ -10,7 +10,10 @@ interface BackgroundLayerProps {
  * Reusable background layer component that renders a background image
  * with contrast overlays and implements runtime fallback on load error.
  */
-export default function BackgroundLayer({ imageUrl, children }: BackgroundLayerProps) {
+export default function BackgroundLayer({
+  imageUrl,
+  children,
+}: BackgroundLayerProps) {
   const [currentImageUrl, setCurrentImageUrl] = useState(imageUrl);
   const [hasError, setHasError] = useState(false);
 
@@ -43,7 +46,7 @@ export default function BackgroundLayer({ imageUrl, children }: BackgroundLayerP
     <div className="min-h-screen relative">
       {/* Background image with overlays */}
       <div className="fixed inset-0 z-0">
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-500"
           style={{ backgroundImage: `url(${currentImageUrl})` }}
         />
@@ -54,9 +57,7 @@ export default function BackgroundLayer({ imageUrl, children }: BackgroundLayerP
       </div>
 
       {/* Content */}
-      <div className="relative z-10">
-        {children}
-      </div>
+      <div className="relative z-10">{children}</div>
     </div>
   );
 }

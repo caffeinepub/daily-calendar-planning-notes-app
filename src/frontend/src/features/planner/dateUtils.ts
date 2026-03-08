@@ -22,7 +22,7 @@ export function getMonthGrid(year: number, month: number): CalendarDay[] {
       date,
       dateStr: formatDateISO(date),
       isCurrentMonth: false,
-      isToday: false
+      isToday: false,
     });
   }
 
@@ -34,7 +34,7 @@ export function getMonthGrid(year: number, month: number): CalendarDay[] {
       date,
       dateStr: formatDateISO(date),
       isCurrentMonth: true,
-      isToday
+      isToday,
     });
   }
 
@@ -46,7 +46,7 @@ export function getMonthGrid(year: number, month: number): CalendarDay[] {
       date,
       dateStr: formatDateISO(date),
       isCurrentMonth: false,
-      isToday: false
+      isToday: false,
     });
   }
 
@@ -55,22 +55,22 @@ export function getMonthGrid(year: number, month: number): CalendarDay[] {
 
 export function formatDateISO(date: Date): string {
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
 
 export function formatDateForDisplay(dateStr: string): string {
-  const date = new Date(dateStr + 'T00:00:00');
-  return date.toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+  const date = new Date(`${dateStr}T00:00:00`);
+  return date.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 }
 
 export function getMonthName(month: number): string {
   const date = new Date(2000, month, 1);
-  return date.toLocaleDateString('en-US', { month: 'long' });
+  return date.toLocaleDateString("en-US", { month: "long" });
 }

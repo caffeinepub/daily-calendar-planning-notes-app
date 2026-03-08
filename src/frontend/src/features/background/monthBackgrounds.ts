@@ -4,21 +4,21 @@
  * Provides helper functions to resolve the correct image URL with fallback.
  */
 
-const FALLBACK_IMAGE = '/assets/image-1.png';
+const FALLBACK_IMAGE = "/assets/image-1.png";
 
 const MONTH_IMAGES: Record<number, string> = {
-  1: '/assets/generated/month-01.dim_1920x1080.png',
-  2: '/assets/generated/month-02.dim_1920x1080.png',
-  3: '/assets/generated/month-03.dim_1920x1080.png',
-  4: '/assets/generated/month-04.dim_1920x1080.png',
-  5: '/assets/generated/month-05.dim_1920x1080.png',
-  6: '/assets/generated/month-06.dim_1920x1080.png',
-  7: '/assets/generated/month-07.dim_1920x1080.png',
-  8: '/assets/generated/month-08.dim_1920x1080.png',
-  9: '/assets/generated/month-09.dim_1920x1080.png',
-  10: '/assets/generated/month-10.dim_1920x1080.png',
-  11: '/assets/generated/month-11.dim_1920x1080.png',
-  12: '/assets/generated/month-12.dim_1920x1080.png',
+  1: "/assets/generated/month-01.dim_1920x1080.png",
+  2: "/assets/generated/month-02.dim_1920x1080.png",
+  3: "/assets/generated/month-03.dim_1920x1080.png",
+  4: "/assets/generated/month-04.dim_1920x1080.png",
+  5: "/assets/generated/month-05.dim_1920x1080.png",
+  6: "/assets/generated/month-06.dim_1920x1080.png",
+  7: "/assets/generated/month-07.dim_1920x1080.png",
+  8: "/assets/generated/month-08.dim_1920x1080.png",
+  9: "/assets/generated/month-09.dim_1920x1080.png",
+  10: "/assets/generated/month-10.dim_1920x1080.png",
+  11: "/assets/generated/month-11.dim_1920x1080.png",
+  12: "/assets/generated/month-12.dim_1920x1080.png",
 };
 
 /**

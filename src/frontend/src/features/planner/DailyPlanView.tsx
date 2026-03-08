@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { Plus } from 'lucide-react';
-import { DayPlan, TimeOfDay } from './types';
-import TaskItem from './TaskItem';
-import { formatDateForDisplay } from './dateUtils';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Plus } from "lucide-react";
+import { useState } from "react";
+import TaskItem from "./TaskItem";
+import { formatDateForDisplay } from "./dateUtils";
+import type { DayPlan, TimeOfDay } from "./types";
 
 interface DailyPlanViewProps {
   selectedDate: string;
@@ -21,30 +21,32 @@ export default function DailyPlanView({
   onUpdateTask,
   onDeleteTask,
 }: DailyPlanViewProps) {
-  const [newTaskInputs, setNewTaskInputs] = useState<Record<TimeOfDay, string>>({
-    Morning: '',
-    Afternoon: '',
-    Evening: '',
-  });
+  const [newTaskInputs, setNewTaskInputs] = useState<Record<TimeOfDay, string>>(
+    {
+      Morning: "",
+      Afternoon: "",
+      Evening: "",
+    },
+  );
 
   const handleAddTask = (timeOfDay: TimeOfDay) => {
     const text = newTaskInputs[timeOfDay].trim();
     if (text) {
       onAddTask(selectedDate, text, timeOfDay);
-      setNewTaskInputs(prev => ({ ...prev, [timeOfDay]: '' }));
+      setNewTaskInputs((prev) => ({ ...prev, [timeOfDay]: "" }));
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent, timeOfDay: TimeOfDay) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleAddTask(timeOfDay);
     }
   };
 
   const sections: { timeOfDay: TimeOfDay; label: string; emoji: string }[] = [
-    { timeOfDay: 'Morning', label: 'Morning', emoji: '🌅' },
-    { timeOfDay: 'Afternoon', label: 'Afternoon', emoji: '☀️' },
-    { timeOfDay: 'Evening', label: 'Evening', emoji: '🌙' },
+    { timeOfDay: "Morning", label: "Morning", emoji: "🌅" },
+    { timeOfDay: "Afternoon", label: "Afternoon", emoji: "☀️" },
+    { timeOfDay: "Evening", label: "Evening", emoji: "🌙" },
   ];
 
   return (
@@ -59,7 +61,8 @@ export default function DailyPlanView({
       {/* Time of Day Sections */}
       <div className="space-y-6">
         {sections.map(({ timeOfDay, label, emoji }, index) => {
-          const tasks = dayPlan?.tasks.filter(task => task.timeOfDay === timeOfDay) || [];
+          const tasks =
+            dayPlan?.tasks.filter((task) => task.timeOfDay === timeOfDay) || [];
           return (
             <div
               key={timeOfDay}
@@ -81,11 +84,13 @@ export default function DailyPlanView({
                     No tasks yet. Add one below!
                   </p>
                 ) : (
-                  tasks.map(task => (
+                  tasks.map((task) => (
                     <TaskItem
                       key={task.id}
                       task={task}
-                      onUpdate={(text) => onUpdateTask(selectedDate, task.id, text)}
+                      onUpdate={(text) =>
+                        onUpdateTask(selectedDate, task.id, text)
+                      }
                       onDelete={() => onDeleteTask(selectedDate, task.id)}
                     />
                   ))
@@ -98,7 +103,10 @@ export default function DailyPlanView({
                     placeholder={`Add a task for ${label.toLowerCase()}...`}
                     value={newTaskInputs[timeOfDay]}
                     onChange={(e) =>
-                      setNewTaskInputs(prev => ({ ...prev, [timeOfDay]: e.target.value }))
+                      setNewTaskInputs((prev) => ({
+                        ...prev,
+                        [timeOfDay]: e.target.value,
+                      }))
                     }
                     onKeyPress={(e) => handleKeyPress(e, timeOfDay)}
                     className="task-input flex-1 bg-background/60 border-2 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"

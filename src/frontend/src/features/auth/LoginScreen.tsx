@@ -1,15 +1,23 @@
-import { useInternetIdentity } from '../../hooks/useInternetIdentity';
-import { Loader2, Shield, Lock, Database, CheckCircle2, Fingerprint, Zap } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import BackgroundLayer from '../../components/background/BackgroundLayer';
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  CheckCircle2,
+  Database,
+  Fingerprint,
+  Loader2,
+  Lock,
+  Shield,
+  Zap,
+} from "lucide-react";
+import BackgroundLayer from "../../components/background/BackgroundLayer";
+import { useInternetIdentity } from "../../hooks/useInternetIdentity";
 
 export default function LoginScreen() {
   const { login, loginStatus, loginError } = useInternetIdentity();
 
-  const isLoggingIn = loginStatus === 'logging-in';
-  const isError = loginStatus === 'loginError';
+  const isLoggingIn = loginStatus === "logging-in";
+  const isError = loginStatus === "loginError";
 
   return (
     <BackgroundLayer imageUrl="/assets/image-1.png">
@@ -17,18 +25,18 @@ export default function LoginScreen() {
         {/* Content container */}
         <div className="w-full max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-            
             {/* Left column - Informational content */}
             <div className="lg:col-span-7 space-y-6 animate-in fade-in slide-in-from-left-8 duration-700">
-              
               {/* Hero heading */}
               <div className="space-y-4 mb-8">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-                  Your Daily Planner,<br />
+                  Your Daily Planner,
+                  <br />
                   <span className="text-primary">Simplified</span>
                 </h1>
                 <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl">
-                  Organize your day with a beautiful, secure planner powered by the Internet Computer.
+                  Organize your day with a beautiful, secure planner powered by
+                  the Internet Computer.
                 </p>
               </div>
 
@@ -43,15 +51,33 @@ export default function LoginScreen() {
                 <CardContent className="space-y-3 text-sm text-muted-foreground">
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <p><strong className="text-foreground">No passwords required:</strong> Sign in securely using Internet Identity, a passwordless authentication system built on blockchain technology.</p>
+                    <p>
+                      <strong className="text-foreground">
+                        No passwords required:
+                      </strong>{" "}
+                      Sign in securely using Internet Identity, a passwordless
+                      authentication system built on blockchain technology.
+                    </p>
                   </div>
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <p><strong className="text-foreground">One-click access:</strong> Your identity is cryptographically secured and works across all Internet Computer applications.</p>
+                    <p>
+                      <strong className="text-foreground">
+                        One-click access:
+                      </strong>{" "}
+                      Your identity is cryptographically secured and works
+                      across all Internet Computer applications.
+                    </p>
                   </div>
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <p><strong className="text-foreground">Privacy first:</strong> No email, phone number, or personal information needed to get started.</p>
+                    <p>
+                      <strong className="text-foreground">
+                        Privacy first:
+                      </strong>{" "}
+                      No email, phone number, or personal information needed to
+                      get started.
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -67,15 +93,33 @@ export default function LoginScreen() {
                 <CardContent className="space-y-3 text-sm text-muted-foreground">
                   <div className="flex items-start gap-3">
                     <Lock className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
-                    <p><strong className="text-foreground">Local storage:</strong> All your planner data is stored directly in your browser's local storage—nothing is sent to external servers.</p>
+                    <p>
+                      <strong className="text-foreground">
+                        Local storage:
+                      </strong>{" "}
+                      All your planner data is stored directly in your browser's
+                      local storage—nothing is sent to external servers.
+                    </p>
                   </div>
                   <div className="flex items-start gap-3">
                     <Lock className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
-                    <p><strong className="text-foreground">Your device, your data:</strong> Tasks, plans, and schedules remain on your device and are never shared or analyzed.</p>
+                    <p>
+                      <strong className="text-foreground">
+                        Your device, your data:
+                      </strong>{" "}
+                      Tasks, plans, and schedules remain on your device and are
+                      never shared or analyzed.
+                    </p>
                   </div>
                   <div className="flex items-start gap-3">
                     <Lock className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
-                    <p><strong className="text-foreground">Complete control:</strong> You can clear your data anytime from your browser settings.</p>
+                    <p>
+                      <strong className="text-foreground">
+                        Complete control:
+                      </strong>{" "}
+                      You can clear your data anytime from your browser
+                      settings.
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -90,20 +134,47 @@ export default function LoginScreen() {
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm text-muted-foreground">
                   <div className="flex items-start gap-3">
-                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold flex-shrink-0">1</span>
-                    <p><strong className="text-foreground">Sign in:</strong> Click the button to create or connect your Internet Identity.</p>
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold flex-shrink-0">
+                      1
+                    </span>
+                    <p>
+                      <strong className="text-foreground">Sign in:</strong>{" "}
+                      Click the button to create or connect your Internet
+                      Identity.
+                    </p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold flex-shrink-0">2</span>
-                    <p><strong className="text-foreground">View your calendar:</strong> Browse months and select any day to start planning.</p>
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold flex-shrink-0">
+                      2
+                    </span>
+                    <p>
+                      <strong className="text-foreground">
+                        View your calendar:
+                      </strong>{" "}
+                      Browse months and select any day to start planning.
+                    </p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold flex-shrink-0">3</span>
-                    <p><strong className="text-foreground">Add tasks:</strong> Organize your day into Morning, Afternoon, and Evening sections with custom tasks.</p>
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold flex-shrink-0">
+                      3
+                    </span>
+                    <p>
+                      <strong className="text-foreground">Add tasks:</strong>{" "}
+                      Organize your day into Morning, Afternoon, and Evening
+                      sections with custom tasks.
+                    </p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold flex-shrink-0">4</span>
-                    <p><strong className="text-foreground">Stay productive:</strong> Check off completed tasks and watch your progress throughout the day.</p>
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold flex-shrink-0">
+                      4
+                    </span>
+                    <p>
+                      <strong className="text-foreground">
+                        Stay productive:
+                      </strong>{" "}
+                      Check off completed tasks and watch your progress
+                      throughout the day.
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -119,16 +190,24 @@ export default function LoginScreen() {
                     </div>
                   </div>
                   <div>
-                    <CardTitle className="text-2xl sm:text-3xl font-bold text-foreground">Welcome</CardTitle>
-                    <p className="text-muted-foreground mt-2">Sign in to access your daily planner</p>
+                    <CardTitle className="text-2xl sm:text-3xl font-bold text-foreground">
+                      Welcome
+                    </CardTitle>
+                    <p className="text-muted-foreground mt-2">
+                      Sign in to access your daily planner
+                    </p>
                   </div>
                 </CardHeader>
 
                 <CardContent className="space-y-6 pt-2">
                   {isError && loginError && (
-                    <Alert variant="destructive" className="animate-in fade-in slide-in-from-top-2 duration-300">
+                    <Alert
+                      variant="destructive"
+                      className="animate-in fade-in slide-in-from-top-2 duration-300"
+                    >
                       <AlertDescription>
-                        {loginError.message || 'Failed to sign in. Please try again.'}
+                        {loginError.message ||
+                          "Failed to sign in. Please try again."}
                       </AlertDescription>
                     </Alert>
                   )}
@@ -168,11 +247,11 @@ export default function LoginScreen() {
               {/* Footer */}
               <div className="mt-8 text-center text-sm text-muted-foreground">
                 <p>
-                  © 2026. Built with ❤️ using{' '}
-                  <a 
-                    href="https://caffeine.ai" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                  © 2026. Built with ❤️ using{" "}
+                  <a
+                    href="https://caffeine.ai"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-primary hover:underline font-medium transition-colors"
                   >
                     caffeine.ai

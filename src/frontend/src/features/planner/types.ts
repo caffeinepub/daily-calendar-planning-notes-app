@@ -1,4 +1,4 @@
-export type TimeOfDay = 'Morning' | 'Afternoon' | 'Evening';
+export type TimeOfDay = "Morning" | "Afternoon" | "Evening";
 
 export interface Task {
   id: string;

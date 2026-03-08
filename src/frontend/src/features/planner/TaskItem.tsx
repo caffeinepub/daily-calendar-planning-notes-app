@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Pencil, Trash2, Check, X } from 'lucide-react';
-import { Task } from './types';
+import { Check, Pencil, Trash2, X } from "lucide-react";
+import { useState } from "react";
+import type { Task } from "./types";
 
 interface TaskItemProps {
   task: Task;
@@ -39,7 +39,7 @@ export default function TaskItem({ task, onUpdate, onDelete }: TaskItemProps) {
       className={`
         task-item
         group bg-background rounded-lg border border-border p-3 transition-all duration-300
-        ${isDeleting ? 'task-item-deleting' : 'task-item-entering'}
+        ${isDeleting ? "task-item-deleting" : "task-item-entering"}
         hover:shadow-sm hover:border-primary/30
       `}
     >
@@ -50,14 +50,14 @@ export default function TaskItem({ task, onUpdate, onDelete }: TaskItemProps) {
             value={editText}
             onChange={(e) => setEditText(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') handleSave();
-              if (e.key === 'Escape') handleCancel();
+              if (e.key === "Enter") handleSave();
+              if (e.key === "Escape") handleCancel();
             }}
             className="flex-1 px-2 py-1 rounded border border-input bg-background text-foreground text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all"
-            autoFocus
             aria-label="Edit task"
           />
           <button
+            type="button"
             onClick={handleSave}
             className="task-control-btn p-1 rounded hover:bg-accent active:scale-90 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Save"
@@ -65,6 +65,7 @@ export default function TaskItem({ task, onUpdate, onDelete }: TaskItemProps) {
             <Check className="w-4 h-4 text-green-600" />
           </button>
           <button
+            type="button"
             onClick={handleCancel}
             className="task-control-btn p-1 rounded hover:bg-accent active:scale-90 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Cancel"
@@ -77,6 +78,7 @@ export default function TaskItem({ task, onUpdate, onDelete }: TaskItemProps) {
           <span className="flex-1 text-sm text-foreground">{task.text}</span>
           <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <button
+              type="button"
               onClick={() => setIsEditing(true)}
               className="task-control-btn p-1 rounded hover:bg-accent active:scale-90 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               aria-label="Edit task"
@@ -84,6 +86,7 @@ export default function TaskItem({ task, onUpdate, onDelete }: TaskItemProps) {
               <Pencil className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
             </button>
             <button
+              type="button"
               onClick={handleDelete}
               className="task-control-btn p-1 rounded hover:bg-destructive/10 active:scale-90 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               aria-label="Delete task"

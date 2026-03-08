@@ -1,14 +1,19 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useState } from "react";
 
 interface ViewTransitionProps {
   children: ReactNode;
   viewKey: string;
-  direction?: 'forward' | 'back';
+  direction?: "forward" | "back";
 }
 
-export default function ViewTransition({ children, viewKey, direction = 'forward' }: ViewTransitionProps) {
+export default function ViewTransition({
+  children,
+  viewKey,
+  direction = "forward",
+}: ViewTransitionProps) {
   const [isEntering, setIsEntering] = useState(true);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: viewKey change triggers the animation
   useEffect(() => {
     setIsEntering(true);
     const timer = setTimeout(() => setIsEntering(false), 50);
@@ -18,8 +23,10 @@ export default function ViewTransition({ children, viewKey, direction = 'forward
   return (
     <div
       key={viewKey}
-      className={`view-transition ${isEntering ? 'view-transition-enter' : ''} ${
-        direction === 'back' ? 'view-transition-back' : 'view-transition-forward'
+      className={`view-transition ${isEntering ? "view-transition-enter" : ""} ${
+        direction === "back"
+          ? "view-transition-back"
+          : "view-transition-forward"
       }`}
     >
       {children}

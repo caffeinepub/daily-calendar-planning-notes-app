@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from "react";
 import {
-  getThemePreference,
-  setThemePreference,
-  getMotionPreference,
-  setMotionPreference,
+  applyMotionPreference,
   applyThemePreference,
-  applyMotionPreference
-} from './preferencesStorage';
+  getMotionPreference,
+  getThemePreference,
+  setMotionPreference,
+  setThemePreference,
+} from "./preferencesStorage";
 
-type ThemePreference = 'system' | 'light' | 'dark';
-type MotionPreference = 'system' | 'on' | 'off';
+type ThemePreference = "system" | "light" | "dark";
+type MotionPreference = "system" | "on" | "off";
 
 export function usePreferences() {
   const [theme, setTheme] = useState<ThemePreference>(getThemePreference());
@@ -17,11 +17,11 @@ export function usePreferences() {
 
   useEffect(() => {
     // Listen for system theme changes when in system mode
-    if (theme === 'system') {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    if (theme === "system") {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
       const handler = () => applyThemePreference();
-      mediaQuery.addEventListener('change', handler);
-      return () => mediaQuery.removeEventListener('change', handler);
+      mediaQuery.addEventListener("change", handler);
+      return () => mediaQuery.removeEventListener("change", handler);
     }
   }, [theme]);
 
@@ -41,6 +41,6 @@ export function usePreferences() {
     theme,
     motion,
     updateTheme,
-    updateMotion
+    updateMotion,
   };
 }

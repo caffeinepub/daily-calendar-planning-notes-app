@@ -1,28 +1,41 @@
-import { useState, useEffect } from 'react';
-import { CalendarIcon, ArrowLeft, LogOut, Settings } from 'lucide-react';
-import MonthlyCalendarView from './features/planner/MonthlyCalendarView';
-import DailyPlanView from './features/planner/DailyPlanView';
-import ProfileView from './features/profile/ProfileView';
-import LoginScreen from './features/auth/LoginScreen';
-import ViewTransition from './components/animations/ViewTransition';
-import BackgroundLayer from './components/background/BackgroundLayer';
-import { usePlannerStore } from './features/planner/usePlannerStore';
-import { useInternetIdentity } from './hooks/useInternetIdentity';
-import { Button } from '@/components/ui/button';
-import { applyThemePreference, applyMotionPreference } from './features/settings/preferencesStorage';
-import { getMonthBackgroundUrl, getBackgroundUrlForDate } from './features/background/monthBackgrounds';
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, LogOut, Settings } from "lucide-react";
+import { useEffect, useState } from "react";
+import ViewTransition from "./components/animations/ViewTransition";
+import BackgroundLayer from "./components/background/BackgroundLayer";
+import LoginScreen from "./features/auth/LoginScreen";
+import {
+  getBackgroundUrlForDate,
+  getMonthBackgroundUrl,
+} from "./features/background/monthBackgrounds";
+import DailyPlanView from "./features/planner/DailyPlanView";
+import MonthlyCalendarView from "./features/planner/MonthlyCalendarView";
+import { usePlannerStore } from "./features/planner/usePlannerStore";
+import ProfileView from "./features/profile/ProfileView";
+import {
+  applyMotionPreference,
+  applyThemePreference,
+} from "./features/settings/preferencesStorage";
+import { useInternetIdentity } from "./hooks/useInternetIdentity";
 
-type View = 'calendar' | 'daily' | 'settings';
+type View = "calendar" | "daily" | "settings";
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<View>('calendar');
+  const [currentView, setCurrentView] = useState<View>("calendar");
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [transitionDirection, setTransitionDirection] = useState<'forward' | 'back'>('forward');
-  const [displayedMonth, setDisplayedMonth] = useState<number>(new Date().getMonth());
-  const [displayedYear, setDisplayedYear] = useState<number>(new Date().getFullYear());
-  
-  const { dayPlans, addTask, updateTask, deleteTask, loadFromStorage } = usePlannerStore();
+  const [transitionDirection, setTransitionDirection] = useState<
+    "forward" | "back"
+  >("forward");
+  const [displayedMonth, setDisplayedMonth] = useState<number>(
+    new Date().getMonth(),
+  );
+  const [_displayedYear, setDisplayedYear] = useState<number>(
+    new Date().getFullYear(),
+  );
+
+  const { dayPlans, addTask, updateTask, deleteTask, loadFromStorage } =
+    usePlannerStore();
   const { identity, clear, isInitializing } = useInternetIdentity();
 
   // Check if user is authenticated (identity exists and is not anonymous)
@@ -41,44 +54,44 @@ export default function App() {
 
   // Determine background image based on current view
   const getBackgroundImage = (): string => {
-    if (currentView === 'calendar') {
+    if (currentView === "calendar") {
       // Use the displayed month from calendar navigation
       return getMonthBackgroundUrl(displayedMonth + 1); // +1 because displayedMonth is 0-indexed
-    } else if (currentView === 'daily' && selectedDate) {
-      // Use the month from the selected date
-      const date = new Date(selectedDate + 'T00:00:00');
-      return getBackgroundUrlForDate(date);
-    } else {
-      // Settings view: use current date's month
-      return getBackgroundUrlForDate(new Date());
     }
+    if (currentView === "daily" && selectedDate) {
+      // Use the month from the selected date
+      const date = new Date(`${selectedDate}T00:00:00`);
+      return getBackgroundUrlForDate(date);
+    }
+    // Settings view: use current date's month
+    return getBackgroundUrlForDate(new Date());
   };
 
   const handleDateSelect = (dateStr: string) => {
     setSelectedDate(dateStr);
-    setTransitionDirection('forward');
+    setTransitionDirection("forward");
     setIsTransitioning(true);
     setTimeout(() => {
-      setCurrentView('daily');
+      setCurrentView("daily");
       setIsTransitioning(false);
     }, 150);
   };
 
   const handleBackToCalendar = () => {
-    setTransitionDirection('back');
+    setTransitionDirection("back");
     setIsTransitioning(true);
     setTimeout(() => {
-      setCurrentView('calendar');
+      setCurrentView("calendar");
       setSelectedDate(null);
       setIsTransitioning(false);
     }, 150);
   };
 
   const handleOpenSettings = () => {
-    setTransitionDirection('forward');
+    setTransitionDirection("forward");
     setIsTransitioning(true);
     setTimeout(() => {
-      setCurrentView('settings');
+      setCurrentView("settings");
       setIsTransitioning(false);
     }, 150);
   };
@@ -97,7 +110,11 @@ export default function App() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <CalendarIcon className="w-12 h-12 text-primary mx-auto mb-4 animate-pulse" />
+          <img
+            src="/assets/generated/planday-icon-v2-transparent.dim_200x200.png"
+            alt="PlanDay"
+            className="w-16 h-16 mx-auto mb-4 animate-pulse"
+          />
           <p className="text-muted-foreground">Loading...</p>
         </div>
       </div>
@@ -116,11 +133,14 @@ export default function App() {
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <CalendarIcon className="w-6 h-6 text-primary" />
-                <h1 className="text-2xl font-semibold text-foreground">Daily Planner</h1>
+                <img
+                  src="/assets/generated/planday-logo-v2-transparent.dim_600x160.png"
+                  alt="PlanDay"
+                  className="h-9 w-auto object-contain"
+                />
               </div>
               <div className="flex items-center gap-2">
-                {currentView === 'daily' && selectedDate && (
+                {currentView === "daily" && selectedDate && (
                   <Button
                     onClick={handleBackToCalendar}
                     variant="secondary"
@@ -131,7 +151,7 @@ export default function App() {
                     <span className="hidden sm:inline">Back to Calendar</span>
                   </Button>
                 )}
-                {currentView === 'settings' && (
+                {currentView === "settings" && (
                   <Button
                     onClick={handleBackToCalendar}
                     variant="secondary"
@@ -142,7 +162,7 @@ export default function App() {
                     <span className="hidden sm:inline">Back to Planner</span>
                   </Button>
                 )}
-                {currentView !== 'settings' && (
+                {currentView !== "settings" && (
                   <Button
                     onClick={handleOpenSettings}
                     variant="outline"
@@ -169,15 +189,17 @@ export default function App() {
 
         <main className="container mx-auto px-4 py-8">
           <ViewTransition viewKey={currentView} direction={transitionDirection}>
-            <div className={`transition-opacity duration-150 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-              {currentView === 'calendar' && (
+            <div
+              className={`transition-opacity duration-150 ${isTransitioning ? "opacity-0" : "opacity-100"}`}
+            >
+              {currentView === "calendar" && (
                 <MonthlyCalendarView
                   onDateSelect={handleDateSelect}
                   dayPlans={dayPlans}
                   onMonthChange={handleMonthChange}
                 />
               )}
-              {currentView === 'daily' && selectedDate && (
+              {currentView === "daily" && selectedDate && (
                 <DailyPlanView
                   selectedDate={selectedDate}
                   dayPlan={dayPlans[selectedDate]}
@@ -186,7 +208,7 @@ export default function App() {
                   onDeleteTask={deleteTask}
                 />
               )}
-              {currentView === 'settings' && (
+              {currentView === "settings" && (
                 <ProfileView identity={identity} />
               )}
             </div>
@@ -195,7 +217,17 @@ export default function App() {
 
         <footer className="border-t border-border mt-16 py-6 bg-card/40 backdrop-blur-sm">
           <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-            <p>© 2026. Built with ❤️ using <a href="https://caffeine.ai" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">caffeine.ai</a></p>
+            <p>
+              © 2026 PlanDay. Built with ❤️ using{" "}
+              <a
+                href="https://caffeine.ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                caffeine.ai
+              </a>
+            </p>
           </div>
         </footer>
       </div>

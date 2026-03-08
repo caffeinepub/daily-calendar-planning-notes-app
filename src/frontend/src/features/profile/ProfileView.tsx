@@ -1,31 +1,68 @@
-import { Identity } from '@dfinity/agent';
-import { CalendarIcon, Database, Shield, Palette, Zap, Download, Upload, Trash2, Bell } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { usePreferences } from '../settings/usePreferences';
-import { exportPlannerData, validateImportData, importPlannerData, clearPlannerData } from '../planner/storage';
-import { usePlannerStore } from '../planner/usePlannerStore';
-import { useState, useRef } from 'react';
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import type { Identity } from "@dfinity/agent";
+import {
+  Bell,
+  CalendarIcon,
+  Database,
+  Download,
+  Palette,
+  Shield,
+  Trash2,
+  Upload,
+  Zap,
+} from "lucide-react";
+import { useRef, useState } from "react";
+import {
+  clearPlannerData,
+  exportPlannerData,
+  importPlannerData,
+  validateImportData,
+} from "../planner/storage";
+import { usePlannerStore } from "../planner/usePlannerStore";
+import { usePreferences } from "../settings/usePreferences";
 
 interface ProfileViewProps {
   identity: Identity | null;
 }
 
 export default function ProfileView({ identity }: ProfileViewProps) {
-  const principal = identity?.getPrincipal().toString() || 'Not available';
+  const principal = identity?.getPrincipal().toString() || "Not available";
   const { theme, motion, updateTheme, updateMotion } = usePreferences();
   const { replacePlannerData, clearAllData } = usePlannerStore();
   const [importError, setImportError] = useState<string | null>(null);
   const [importSuccess, setImportSuccess] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   // Format principal for better readability (show first and last parts)
-  const formatPrincipal = (p: string) => {
+  const _formatPrincipal = (p: string) => {
     if (p.length > 20) {
       return `${p.slice(0, 10)}...${p.slice(-10)}`;
     }
@@ -34,11 +71,11 @@ export default function ProfileView({ identity }: ProfileViewProps) {
 
   const handleExport = () => {
     const data = exportPlannerData();
-    const blob = new Blob([data], { type: 'application/json' });
+    const blob = new Blob([data], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = `daily-planner-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `daily-planner-backup-${new Date().toISOString().split("T")[0]}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -49,7 +86,9 @@ export default function ProfileView({ identity }: ProfileViewProps) {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -59,9 +98,9 @@ export default function ProfileView({ identity }: ProfileViewProps) {
     try {
       const text = await file.text();
       const validation = validateImportData(text);
-      
+
       if (!validation.valid) {
-        setImportError(validation.error || 'Invalid file format');
+        setImportError(validation.error || "Invalid file format");
         return;
       }
 
@@ -71,13 +110,13 @@ export default function ProfileView({ identity }: ProfileViewProps) {
         setImportSuccess(true);
         setTimeout(() => setImportSuccess(false), 3000);
       }
-    } catch (error) {
-      setImportError('Failed to read file');
+    } catch (_error) {
+      setImportError("Failed to read file");
     }
 
     // Reset file input
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -102,7 +141,7 @@ export default function ProfileView({ identity }: ProfileViewProps) {
             </div>
           </div>
         </CardHeader>
-        
+
         <CardContent className="space-y-8 pt-8">
           {/* Account Section */}
           <section className="settings-section space-y-4">
@@ -111,7 +150,9 @@ export default function ProfileView({ identity }: ProfileViewProps) {
               <h3 className="text-xl font-semibold">Account</h3>
             </div>
             <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Your Principal ID:</p>
+              <p className="text-sm font-medium text-muted-foreground">
+                Your Principal ID:
+              </p>
               <p className="text-sm font-mono bg-background px-3 py-2 rounded border break-all">
                 {principal}
               </p>
@@ -124,17 +165,28 @@ export default function ProfileView({ identity }: ProfileViewProps) {
           <Separator />
 
           {/* Preferences Section */}
-          <section className="settings-section space-y-6" style={{ animationDelay: '100ms' }}>
+          <section
+            className="settings-section space-y-6"
+            style={{ animationDelay: "100ms" }}
+          >
             <div className="flex items-center gap-3">
               <Palette className="w-6 h-6 text-primary" />
               <h3 className="text-xl font-semibold">Preferences</h3>
             </div>
-            
+
             {/* Theme Preference */}
             <div className="space-y-3">
-              <Label htmlFor="theme-select" className="text-base font-medium">Theme</Label>
-              <Select value={theme} onValueChange={(value) => updateTheme(value as any)}>
-                <SelectTrigger id="theme-select" className="settings-control w-full sm:w-64 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]">
+              <Label htmlFor="theme-select" className="text-base font-medium">
+                Theme
+              </Label>
+              <Select
+                value={theme}
+                onValueChange={(value) => updateTheme(value as any)}
+              >
+                <SelectTrigger
+                  id="theme-select"
+                  className="settings-control w-full sm:w-64 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]"
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -152,10 +204,21 @@ export default function ProfileView({ identity }: ProfileViewProps) {
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Zap className="w-4 h-4 text-primary" />
-                <Label htmlFor="motion-select" className="text-base font-medium">Animations</Label>
+                <Label
+                  htmlFor="motion-select"
+                  className="text-base font-medium"
+                >
+                  Animations
+                </Label>
               </div>
-              <Select value={motion} onValueChange={(value) => updateMotion(value as any)}>
-                <SelectTrigger id="motion-select" className="settings-control w-full sm:w-64 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]">
+              <Select
+                value={motion}
+                onValueChange={(value) => updateMotion(value as any)}
+              >
+                <SelectTrigger
+                  id="motion-select"
+                  className="settings-control w-full sm:w-64 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]"
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -177,8 +240,9 @@ export default function ProfileView({ identity }: ProfileViewProps) {
               </div>
               <div className="bg-muted/30 rounded-lg p-4 border border-muted">
                 <p className="text-sm text-muted-foreground">
-                  Browser notifications are not currently enabled for this application. 
-                  All your planner data is stored locally and accessible anytime you visit.
+                  Browser notifications are not currently enabled for this
+                  application. All your planner data is stored locally and
+                  accessible anytime you visit.
                 </p>
               </div>
             </div>
@@ -187,7 +251,10 @@ export default function ProfileView({ identity }: ProfileViewProps) {
           <Separator />
 
           {/* Data Management Section */}
-          <section className="settings-section space-y-6" style={{ animationDelay: '200ms' }}>
+          <section
+            className="settings-section space-y-6"
+            style={{ animationDelay: "200ms" }}
+          >
             <div className="flex items-center gap-3">
               <Database className="w-6 h-6 text-primary" />
               <h3 className="text-xl font-semibold">Data Management</h3>
@@ -196,14 +263,19 @@ export default function ProfileView({ identity }: ProfileViewProps) {
             {/* Data Storage Info */}
             <div className="bg-accent/20 rounded-lg p-4 border border-accent/30">
               <p className="text-sm leading-relaxed">
-                <strong>Important:</strong> All your planner data (tasks, notes, and schedules) 
-                is stored locally in your browser's storage. This means:
+                <strong>Important:</strong> All your planner data (tasks, notes,
+                and schedules) is stored locally in your browser's storage. This
+                means:
               </p>
               <ul className="list-disc list-inside mt-3 space-y-2 text-sm text-muted-foreground ml-2">
                 <li>Your data is private and never leaves your device</li>
                 <li>Data is specific to this browser and device</li>
-                <li>Clearing browser data will remove your planner information</li>
-                <li>Your data won't sync across different browsers or devices</li>
+                <li>
+                  Clearing browser data will remove your planner information
+                </li>
+                <li>
+                  Your data won't sync across different browsers or devices
+                </li>
               </ul>
             </div>
 
@@ -218,7 +290,7 @@ export default function ProfileView({ identity }: ProfileViewProps) {
                   <Download className="w-4 h-4 mr-2" />
                   Export Data
                 </Button>
-                
+
                 <Button
                   onClick={handleImport}
                   variant="outline"
@@ -247,15 +319,23 @@ export default function ProfileView({ identity }: ProfileViewProps) {
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
                       <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete all your 
-                        planner data including all tasks and schedules from this browser.
+                        This action cannot be undone. This will permanently
+                        delete all your planner data including all tasks and
+                        schedules from this browser.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel className="transition-all duration-200 hover:scale-105 active:scale-95">Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleClearData} className="bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-all duration-200 hover:scale-105 active:scale-95">
+                      <AlertDialogCancel className="transition-all duration-200 hover:scale-105 active:scale-95">
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={handleClearData}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-all duration-200 hover:scale-105 active:scale-95"
+                      >
                         Delete Everything
                       </AlertDialogAction>
                     </AlertDialogFooter>
@@ -271,12 +351,15 @@ export default function ProfileView({ identity }: ProfileViewProps) {
 
               {importSuccess && (
                 <Alert>
-                  <AlertDescription>Data imported successfully!</AlertDescription>
+                  <AlertDescription>
+                    Data imported successfully!
+                  </AlertDescription>
                 </Alert>
               )}
 
               <p className="text-xs text-muted-foreground">
-                Export your data to create a backup, or import a previously exported file to restore your planner.
+                Export your data to create a backup, or import a previously
+                exported file to restore your planner.
               </p>
             </div>
           </section>
@@ -284,14 +367,18 @@ export default function ProfileView({ identity }: ProfileViewProps) {
           <Separator />
 
           {/* App Info Section */}
-          <section className="settings-section space-y-4" style={{ animationDelay: '300ms' }}>
+          <section
+            className="settings-section space-y-4"
+            style={{ animationDelay: "300ms" }}
+          >
             <div className="flex items-center gap-3">
               <CalendarIcon className="w-6 h-6 text-primary" />
               <h3 className="text-xl font-semibold">About Daily Planner</h3>
             </div>
             <p className="text-muted-foreground leading-relaxed">
-              A simple and elegant daily planning application to help you organize your tasks 
-              throughout the day. Plan your mornings, afternoons, and evenings with ease.
+              A simple and elegant daily planning application to help you
+              organize your tasks throughout the day. Plan your mornings,
+              afternoons, and evenings with ease.
             </p>
           </section>
         </CardContent>
