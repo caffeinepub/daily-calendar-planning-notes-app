@@ -13,7 +13,7 @@ export default function ViewTransition({
 }: ViewTransitionProps) {
   const [isEntering, setIsEntering] = useState(true);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: viewKey change triggers the animation
+  // biome-ignore lint/correctness/useExhaustiveDependencies: viewKey triggers enter animation intentionally
   useEffect(() => {
     setIsEntering(true);
     const timer = setTimeout(() => setIsEntering(false), 50);

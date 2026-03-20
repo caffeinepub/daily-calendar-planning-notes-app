@@ -68,6 +68,7 @@ export default function MonthlyCalendarView({
           onClick={handlePrevMonth}
           className="p-2 rounded-lg hover:bg-accent/20 active:bg-accent/30 transition-all duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           aria-label="Previous month"
+          data-ocid="calendar.pagination_prev"
         >
           <ChevronLeft className="w-6 h-6 text-foreground" />
         </button>
@@ -81,6 +82,7 @@ export default function MonthlyCalendarView({
           onClick={handleNextMonth}
           className="p-2 rounded-lg hover:bg-accent/20 active:bg-accent/30 transition-all duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           aria-label="Next month"
+          data-ocid="calendar.pagination_next"
         >
           <ChevronRight className="w-6 h-6 text-foreground" />
         </button>

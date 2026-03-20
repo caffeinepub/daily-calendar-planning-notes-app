@@ -61,14 +61,6 @@ export default function ProfileView({ identity }: ProfileViewProps) {
   const [importSuccess, setImportSuccess] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Format principal for better readability (show first and last parts)
-  const _formatPrincipal = (p: string) => {
-    if (p.length > 20) {
-      return `${p.slice(0, 10)}...${p.slice(-10)}`;
-    }
-    return p;
-  };
-
   const handleExport = () => {
     const data = exportPlannerData();
     const blob = new Blob([data], { type: "application/json" });
@@ -286,6 +278,7 @@ export default function ProfileView({ identity }: ProfileViewProps) {
                   onClick={handleExport}
                   variant="outline"
                   className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
+                  data-ocid="settings.secondary_button"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Export Data
@@ -295,6 +288,7 @@ export default function ProfileView({ identity }: ProfileViewProps) {
                   onClick={handleImport}
                   variant="outline"
                   className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
+                  data-ocid="settings.upload_button"
                 >
                   <Upload className="w-4 h-4 mr-2" />
                   Import Data
@@ -312,12 +306,13 @@ export default function ProfileView({ identity }: ProfileViewProps) {
                     <Button
                       variant="destructive"
                       className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
+                      data-ocid="settings.delete_button"
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
                       Clear All Data
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent>
+                  <AlertDialogContent data-ocid="settings.dialog">
                     <AlertDialogHeader>
                       <AlertDialogTitle>
                         Are you absolutely sure?
@@ -329,12 +324,16 @@ export default function ProfileView({ identity }: ProfileViewProps) {
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel className="transition-all duration-200 hover:scale-105 active:scale-95">
+                      <AlertDialogCancel
+                        className="transition-all duration-200 hover:scale-105 active:scale-95"
+                        data-ocid="settings.cancel_button"
+                      >
                         Cancel
                       </AlertDialogCancel>
                       <AlertDialogAction
                         onClick={handleClearData}
                         className="bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-all duration-200 hover:scale-105 active:scale-95"
+                        data-ocid="settings.confirm_button"
                       >
                         Delete Everything
                       </AlertDialogAction>
@@ -344,13 +343,13 @@ export default function ProfileView({ identity }: ProfileViewProps) {
               </div>
 
               {importError && (
-                <Alert variant="destructive">
+                <Alert variant="destructive" data-ocid="settings.error_state">
                   <AlertDescription>{importError}</AlertDescription>
                 </Alert>
               )}
 
               {importSuccess && (
-                <Alert>
+                <Alert data-ocid="settings.success_state">
                   <AlertDescription>
                     Data imported successfully!
                   </AlertDescription>
@@ -373,7 +372,7 @@ export default function ProfileView({ identity }: ProfileViewProps) {
           >
             <div className="flex items-center gap-3">
               <CalendarIcon className="w-6 h-6 text-primary" />
-              <h3 className="text-xl font-semibold">About Daily Planner</h3>
+              <h3 className="text-xl font-semibold">About PlanDay</h3>
             </div>
             <p className="text-muted-foreground leading-relaxed">
               A simple and elegant daily planning application to help you

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, LogOut, Settings } from "lucide-react";
+import { ArrowLeft, CalendarIcon, LogOut, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 import ViewTransition from "./components/animations/ViewTransition";
 import BackgroundLayer from "./components/background/BackgroundLayer";
@@ -110,11 +110,7 @@ export default function App() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <img
-            src="/assets/generated/planday-icon-v2-transparent.dim_200x200.png"
-            alt="PlanDay"
-            className="w-16 h-16 mx-auto mb-4 animate-pulse"
-          />
+          <CalendarIcon className="w-12 h-12 text-primary mx-auto mb-4 animate-pulse" />
           <p className="text-muted-foreground">Loading...</p>
         </div>
       </div>
@@ -130,13 +126,13 @@ export default function App() {
     <BackgroundLayer imageUrl={getBackgroundImage()}>
       <div className="min-h-screen">
         <header className="border-b border-border bg-card/60 backdrop-blur-md sticky top-0 z-10 shadow-sm">
-          <div className="container mx-auto px-4 py-4">
+          <div className="container mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <img
-                  src="/assets/generated/planday-logo-v2-transparent.dim_600x160.png"
+                  src="/assets/generated/planday-creative-logo-transparent.dim_600x180.png"
                   alt="PlanDay"
-                  className="h-9 w-auto object-contain"
+                  className="h-10 w-auto object-contain"
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -146,6 +142,7 @@ export default function App() {
                     variant="secondary"
                     className="btn-interactive"
                     aria-label="Back to calendar"
+                    data-ocid="nav.secondary_button"
                   >
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     <span className="hidden sm:inline">Back to Calendar</span>
@@ -157,6 +154,7 @@ export default function App() {
                     variant="secondary"
                     className="btn-interactive"
                     aria-label="Back to calendar"
+                    data-ocid="nav.secondary_button"
                   >
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     <span className="hidden sm:inline">Back to Planner</span>
@@ -168,6 +166,7 @@ export default function App() {
                     variant="outline"
                     className="btn-interactive"
                     aria-label="Open settings"
+                    data-ocid="nav.settings_button"
                   >
                     <Settings className="w-4 h-4 mr-2" />
                     <span className="hidden sm:inline">Settings</span>
@@ -178,6 +177,7 @@ export default function App() {
                   variant="outline"
                   className="btn-interactive"
                   aria-label="Sign out"
+                  data-ocid="nav.secondary_button"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Sign out</span>
@@ -218,9 +218,9 @@ export default function App() {
         <footer className="border-t border-border mt-16 py-6 bg-card/40 backdrop-blur-sm">
           <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
             <p>
-              © 2026 PlanDay. Built with ❤️ using{" "}
+              © {new Date().getFullYear()}. Built with ❤️ using{" "}
               <a
-                href="https://caffeine.ai"
+                href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"

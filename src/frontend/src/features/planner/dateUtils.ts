@@ -39,7 +39,7 @@ export function getMonthGrid(year: number, month: number): CalendarDay[] {
   }
 
   // Add trailing days from next month to complete the grid
-  const remainingCells = 42 - grid.length; // 6 rows × 7 days
+  const remainingCells = 42 - grid.length; // 6 rows x 7 days
   for (let i = 1; i <= remainingCells; i++) {
     const date = new Date(year, month + 1, i);
     grid.push({
