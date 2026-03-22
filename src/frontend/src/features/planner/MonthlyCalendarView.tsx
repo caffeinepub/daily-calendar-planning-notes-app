@@ -29,10 +29,8 @@ export default function MonthlyCalendarView({
     setTransitionDirection("left");
     const newMonth = currentMonth === 0 ? 11 : currentMonth - 1;
     const newYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-
     setCurrentMonth(newMonth);
     setCurrentYear(newYear);
-
     if (onMonthChange) {
       onMonthChange(newYear, newMonth);
     }
@@ -42,10 +40,8 @@ export default function MonthlyCalendarView({
     setTransitionDirection("right");
     const newMonth = currentMonth === 11 ? 0 : currentMonth + 1;
     const newYear = currentMonth === 11 ? currentYear + 1 : currentYear;
-
     setCurrentMonth(newMonth);
     setCurrentYear(newYear);
-
     if (onMonthChange) {
       onMonthChange(newYear, newMonth);
     }
@@ -61,14 +57,12 @@ export default function MonthlyCalendarView({
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
-      {/* Month Navigation Header */}
       <div className="flex items-center justify-between bg-card/80 backdrop-blur-sm rounded-2xl px-6 py-4 border-2 border-border shadow-lg">
         <button
           type="button"
           onClick={handlePrevMonth}
           className="p-2 rounded-lg hover:bg-accent/20 active:bg-accent/30 transition-all duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           aria-label="Previous month"
-          data-ocid="calendar.pagination_prev"
         >
           <ChevronLeft className="w-6 h-6 text-foreground" />
         </button>
@@ -82,13 +76,11 @@ export default function MonthlyCalendarView({
           onClick={handleNextMonth}
           className="p-2 rounded-lg hover:bg-accent/20 active:bg-accent/30 transition-all duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           aria-label="Next month"
-          data-ocid="calendar.pagination_next"
         >
           <ChevronRight className="w-6 h-6 text-foreground" />
         </button>
       </div>
 
-      {/* Calendar Grid */}
       <div
         className={`bg-card/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border-2 border-border shadow-lg ${
           transitionDirection === "left"
@@ -99,7 +91,6 @@ export default function MonthlyCalendarView({
         }`}
         onAnimationEnd={() => setTransitionDirection(null)}
       >
-        {/* Weekday Headers */}
         <div className="grid grid-cols-7 gap-2 mb-4">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
             <div
@@ -111,7 +102,6 @@ export default function MonthlyCalendarView({
           ))}
         </div>
 
-        {/* Calendar Days */}
         <div className="grid grid-cols-7 gap-2">
           {grid.map((day: CalendarDay) => {
             const dayHasTasks = hasTasks(day.dateStr, dayPlans);

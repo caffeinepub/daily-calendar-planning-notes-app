@@ -40,6 +40,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useRef, useState } from "react";
+import { getCurrentUser } from "../auth/authUtils";
 import {
   clearPlannerData,
   exportPlannerData,
@@ -53,8 +54,8 @@ interface ProfileViewProps {
   identity: Identity | null;
 }
 
-export default function ProfileView({ identity }: ProfileViewProps) {
-  const principal = identity?.getPrincipal().toString() || "Not available";
+export default function ProfileView({ identity: _identity }: ProfileViewProps) {
+  const currentUser = getCurrentUser();
   const { theme, motion, updateTheme, updateMotion } = usePreferences();
   const { replacePlannerData, clearAllData } = usePlannerStore();
   const [importError, setImportError] = useState<string | null>(null);
@@ -102,11 +103,10 @@ export default function ProfileView({ identity }: ProfileViewProps) {
         setImportSuccess(true);
         setTimeout(() => setImportSuccess(false), 3000);
       }
-    } catch (_error) {
+    } catch (_err) {
       setImportError("Failed to read file");
     }
 
-    // Reset file input
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -142,15 +142,20 @@ export default function ProfileView({ identity }: ProfileViewProps) {
               <h3 className="text-xl font-semibold">Account</h3>
             </div>
             <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">
-                Your Principal ID:
-              </p>
-              <p className="text-sm font-mono bg-background px-3 py-2 rounded border break-all">
-                {principal}
-              </p>
-              <p className="text-xs text-muted-foreground mt-2">
-                This is your unique identifier on the Internet Computer network.
-              </p>
+              {currentUser ? (
+                <>
+                  <p className="text-sm font-medium">
+                    <span className="text-muted-foreground">Name: </span>
+                    {currentUser.name}
+                  </p>
+                  <p className="text-sm font-medium">
+                    <span className="text-muted-foreground">Email: </span>
+                    {currentUser.email}
+                  </p>
+                </>
+              ) : (
+                <p className="text-sm text-muted-foreground">Not signed in</p>
+              )}
             </div>
           </section>
 
@@ -166,7 +171,6 @@ export default function ProfileView({ identity }: ProfileViewProps) {
               <h3 className="text-xl font-semibold">Preferences</h3>
             </div>
 
-            {/* Theme Preference */}
             <div className="space-y-3">
               <Label htmlFor="theme-select" className="text-base font-medium">
                 Theme
@@ -177,7 +181,7 @@ export default function ProfileView({ identity }: ProfileViewProps) {
               >
                 <SelectTrigger
                   id="theme-select"
-                  className="settings-control w-full sm:w-64 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]"
+                  className="settings-control w-full sm:w-64"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -192,7 +196,6 @@ export default function ProfileView({ identity }: ProfileViewProps) {
               </p>
             </div>
 
-            {/* Motion Preference */}
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Zap className="w-4 h-4 text-primary" />
@@ -209,7 +212,7 @@ export default function ProfileView({ identity }: ProfileViewProps) {
               >
                 <SelectTrigger
                   id="motion-select"
-                  className="settings-control w-full sm:w-64 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]"
+                  className="settings-control w-full sm:w-64"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -224,7 +227,6 @@ export default function ProfileView({ identity }: ProfileViewProps) {
               </p>
             </div>
 
-            {/* Notifications Section */}
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Bell className="w-4 h-4 text-primary" />
@@ -232,9 +234,8 @@ export default function ProfileView({ identity }: ProfileViewProps) {
               </div>
               <div className="bg-muted/30 rounded-lg p-4 border border-muted">
                 <p className="text-sm text-muted-foreground">
-                  Browser notifications are not currently enabled for this
-                  application. All your planner data is stored locally and
-                  accessible anytime you visit.
+                  Browser notifications are not currently enabled. All your
+                  planner data is stored locally and accessible anytime.
                 </p>
               </div>
             </div>
@@ -252,12 +253,10 @@ export default function ProfileView({ identity }: ProfileViewProps) {
               <h3 className="text-xl font-semibold">Data Management</h3>
             </div>
 
-            {/* Data Storage Info */}
             <div className="bg-accent/20 rounded-lg p-4 border border-accent/30">
               <p className="text-sm leading-relaxed">
-                <strong>Important:</strong> All your planner data (tasks, notes,
-                and schedules) is stored locally in your browser's storage. This
-                means:
+                <strong>Important:</strong> All your planner data is stored
+                locally in your browser's storage.
               </p>
               <ul className="list-disc list-inside mt-3 space-y-2 text-sm text-muted-foreground ml-2">
                 <li>Your data is private and never leaves your device</li>
@@ -265,20 +264,15 @@ export default function ProfileView({ identity }: ProfileViewProps) {
                 <li>
                   Clearing browser data will remove your planner information
                 </li>
-                <li>
-                  Your data won't sync across different browsers or devices
-                </li>
               </ul>
             </div>
 
-            {/* Import/Export/Clear Actions */}
             <div className="space-y-4">
               <div className="flex flex-wrap gap-3">
                 <Button
                   onClick={handleExport}
                   variant="outline"
-                  className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
-                  data-ocid="settings.secondary_button"
+                  className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Export Data
@@ -287,8 +281,7 @@ export default function ProfileView({ identity }: ProfileViewProps) {
                 <Button
                   onClick={handleImport}
                   variant="outline"
-                  className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
-                  data-ocid="settings.upload_button"
+                  className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95"
                 >
                   <Upload className="w-4 h-4 mr-2" />
                   Import Data
@@ -305,35 +298,27 @@ export default function ProfileView({ identity }: ProfileViewProps) {
                   <AlertDialogTrigger asChild>
                     <Button
                       variant="destructive"
-                      className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
-                      data-ocid="settings.delete_button"
+                      className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95"
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
                       Clear All Data
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent data-ocid="settings.dialog">
+                  <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle>
                         Are you absolutely sure?
                       </AlertDialogTitle>
                       <AlertDialogDescription>
                         This action cannot be undone. This will permanently
-                        delete all your planner data including all tasks and
-                        schedules from this browser.
+                        delete all your planner data from this browser.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel
-                        className="transition-all duration-200 hover:scale-105 active:scale-95"
-                        data-ocid="settings.cancel_button"
-                      >
-                        Cancel
-                      </AlertDialogCancel>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
                         onClick={handleClearData}
-                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-all duration-200 hover:scale-105 active:scale-95"
-                        data-ocid="settings.confirm_button"
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                       >
                         Delete Everything
                       </AlertDialogAction>
@@ -343,13 +328,13 @@ export default function ProfileView({ identity }: ProfileViewProps) {
               </div>
 
               {importError && (
-                <Alert variant="destructive" data-ocid="settings.error_state">
+                <Alert variant="destructive">
                   <AlertDescription>{importError}</AlertDescription>
                 </Alert>
               )}
 
               {importSuccess && (
-                <Alert data-ocid="settings.success_state">
+                <Alert>
                   <AlertDescription>
                     Data imported successfully!
                   </AlertDescription>
@@ -365,7 +350,6 @@ export default function ProfileView({ identity }: ProfileViewProps) {
 
           <Separator />
 
-          {/* App Info Section */}
           <section
             className="settings-section space-y-4"
             style={{ animationDelay: "300ms" }}

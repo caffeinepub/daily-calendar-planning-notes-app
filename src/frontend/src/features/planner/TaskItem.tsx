@@ -54,8 +54,6 @@ export default function TaskItem({ task, onUpdate, onDelete }: TaskItemProps) {
               if (e.key === "Escape") handleCancel();
             }}
             className="flex-1 px-2 py-1 rounded border border-input bg-background text-foreground text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all"
-            // biome-ignore lint/a11y/noAutofocus: intentional focus when entering edit mode
-            autoFocus
             aria-label="Edit task"
           />
           <button

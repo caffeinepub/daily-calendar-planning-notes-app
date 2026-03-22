@@ -27,15 +27,13 @@ export default function LoginScreen() {
           <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 items-start">
             {/* Left column - Informational content */}
             <div className="lg:col-span-7 space-y-6 animate-in fade-in slide-in-from-left-8 duration-700">
-              {/* Hero heading with PlanDay logo */}
+              {/* Hero heading */}
               <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-3 mb-2">
-                  <img
-                    src="/assets/generated/planday-creative-logo-transparent.dim_600x180.png"
-                    alt="PlanDay"
-                    className="h-14 w-auto object-contain"
-                  />
-                </div>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+                  Your Daily Planner,
+                  <br />
+                  <span className="text-primary">Simplified</span>
+                </h1>
                 <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl">
                   Organize your day with a beautiful, secure planner powered by
                   the Internet Computer.
@@ -89,7 +87,7 @@ export default function LoginScreen() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-xl">
                     <Database className="w-5 h-5 text-accent" />
-                    Data &amp; Privacy
+                    Data & Privacy
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm text-muted-foreground">
@@ -187,11 +185,9 @@ export default function LoginScreen() {
               <Card className="w-full max-w-md glass-card-primary border-2 shadow-2xl">
                 <CardHeader className="text-center space-y-4 pb-4">
                   <div className="flex justify-center">
-                    <img
-                      src="/assets/generated/planday-creative-icon-transparent.dim_200x200.png"
-                      alt="PlanDay"
-                      className="w-20 h-20 object-contain drop-shadow-lg"
-                    />
+                    <div className="w-16 h-16 rounded-2xl bg-primary/20 backdrop-blur-sm flex items-center justify-center border border-primary/30">
+                      <Shield className="w-8 h-8 text-primary" />
+                    </div>
                   </div>
                   <div>
                     <CardTitle className="text-2xl sm:text-3xl font-bold text-foreground">
@@ -208,7 +204,6 @@ export default function LoginScreen() {
                     <Alert
                       variant="destructive"
                       className="animate-in fade-in slide-in-from-top-2 duration-300"
-                      data-ocid="login.error_state"
                     >
                       <AlertDescription>
                         {loginError.message ||
@@ -222,7 +217,6 @@ export default function LoginScreen() {
                     disabled={isLoggingIn}
                     className="w-full h-14 text-base font-semibold btn-interactive shadow-lg"
                     size="lg"
-                    data-ocid="login.primary_button"
                   >
                     {isLoggingIn ? (
                       <>
@@ -253,9 +247,9 @@ export default function LoginScreen() {
               {/* Footer */}
               <div className="mt-8 text-center text-sm text-muted-foreground">
                 <p>
-                  © {new Date().getFullYear()}. Built with ❤️ using{" "}
+                  © 2026. Built with ❤️ using{" "}
                   <a
-                    href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "")}`}
+                    href="https://caffeine.ai"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-primary hover:underline font-medium transition-colors"

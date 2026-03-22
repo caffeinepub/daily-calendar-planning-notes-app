@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CalendarIcon, LogOut, Settings } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowLeft, LogOut, Settings } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import ViewTransition from "./components/animations/ViewTransition";
 import BackgroundLayer from "./components/background/BackgroundLayer";
-import LoginScreen from "./features/auth/LoginScreen";
+import LoginPage from "./features/auth/LoginPage";
+import ProtectedRoute from "./features/auth/ProtectedRoute";
+import SignupPage from "./features/auth/SignupPage";
+import { getCurrentUser, logoutUser } from "./features/auth/authUtils";
 import {
   getBackgroundUrlForDate,
   getMonthBackgroundUrl,
@@ -16,12 +19,12 @@ import {
   applyMotionPreference,
   applyThemePreference,
 } from "./features/settings/preferencesStorage";
-import { useInternetIdentity } from "./hooks/useInternetIdentity";
+import { ROUTE_CHANGE_EVENT, getPath, navigate } from "./router";
 
-type View = "calendar" | "daily" | "settings";
+type PlannerView = "calendar" | "daily" | "settings";
 
-export default function App() {
-  const [currentView, setCurrentView] = useState<View>("calendar");
+function DashboardApp() {
+  const [currentView, setCurrentView] = useState<PlannerView>("calendar");
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [transitionDirection, setTransitionDirection] = useState<
@@ -30,40 +33,28 @@ export default function App() {
   const [displayedMonth, setDisplayedMonth] = useState<number>(
     new Date().getMonth(),
   );
-  const [_displayedYear, setDisplayedYear] = useState<number>(
-    new Date().getFullYear(),
-  );
 
   const { dayPlans, addTask, updateTask, deleteTask, loadFromStorage } =
     usePlannerStore();
-  const { identity, clear, isInitializing } = useInternetIdentity();
+  const currentUser = getCurrentUser();
 
-  // Check if user is authenticated (identity exists and is not anonymous)
-  const isAuthenticated = identity && !identity.getPrincipal().isAnonymous();
-
-  // Load data from LocalStorage on mount
   useEffect(() => {
     loadFromStorage();
   }, [loadFromStorage]);
 
-  // Apply persisted preferences on mount
   useEffect(() => {
     applyThemePreference();
     applyMotionPreference();
   }, []);
 
-  // Determine background image based on current view
   const getBackgroundImage = (): string => {
     if (currentView === "calendar") {
-      // Use the displayed month from calendar navigation
-      return getMonthBackgroundUrl(displayedMonth + 1); // +1 because displayedMonth is 0-indexed
+      return getMonthBackgroundUrl(displayedMonth + 1);
     }
     if (currentView === "daily" && selectedDate) {
-      // Use the month from the selected date
       const date = new Date(`${selectedDate}T00:00:00`);
       return getBackgroundUrlForDate(date);
     }
-    // Settings view: use current date's month
     return getBackgroundUrlForDate(new Date());
   };
 
@@ -97,52 +88,48 @@ export default function App() {
   };
 
   const handleSignOut = () => {
-    clear();
+    logoutUser();
+    navigate("/login");
   };
 
-  const handleMonthChange = (year: number, month: number) => {
-    setDisplayedYear(year);
+  const handleMonthChange = (_year: number, month: number) => {
     setDisplayedMonth(month);
   };
-
-  // Show loading state while initializing
-  if (isInitializing) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <CalendarIcon className="w-12 h-12 text-primary mx-auto mb-4 animate-pulse" />
-          <p className="text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Show login screen if not authenticated
-  if (!isAuthenticated) {
-    return <LoginScreen />;
-  }
 
   return (
     <BackgroundLayer imageUrl={getBackgroundImage()}>
       <div className="min-h-screen">
         <header className="border-b border-border bg-card/60 backdrop-blur-md sticky top-0 z-10 shadow-sm">
-          <div className="container mx-auto px-4 py-3">
+          <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <img
+                  src="/assets/generated/planday-creative-icon-transparent.dim_200x200.png"
+                  alt="PlanDay"
+                  className="w-8 h-8 md:hidden"
+                />
+                <img
                   src="/assets/generated/planday-creative-logo-transparent.dim_600x180.png"
                   alt="PlanDay"
-                  className="h-10 w-auto object-contain"
+                  className="hidden md:block h-9 object-contain"
                 />
               </div>
               <div className="flex items-center gap-2">
+                {currentUser && (
+                  <span className="hidden sm:inline text-sm text-muted-foreground mr-1">
+                    Hi,{" "}
+                    <strong className="text-foreground">
+                      {currentUser.name}
+                    </strong>
+                  </span>
+                )}
                 {currentView === "daily" && selectedDate && (
                   <Button
                     onClick={handleBackToCalendar}
                     variant="secondary"
                     className="btn-interactive"
                     aria-label="Back to calendar"
-                    data-ocid="nav.secondary_button"
+                    data-ocid="dashboard.secondary_button"
                   >
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     <span className="hidden sm:inline">Back to Calendar</span>
@@ -154,7 +141,7 @@ export default function App() {
                     variant="secondary"
                     className="btn-interactive"
                     aria-label="Back to calendar"
-                    data-ocid="nav.secondary_button"
+                    data-ocid="dashboard.secondary_button"
                   >
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     <span className="hidden sm:inline">Back to Planner</span>
@@ -166,7 +153,7 @@ export default function App() {
                     variant="outline"
                     className="btn-interactive"
                     aria-label="Open settings"
-                    data-ocid="nav.settings_button"
+                    data-ocid="dashboard.button"
                   >
                     <Settings className="w-4 h-4 mr-2" />
                     <span className="hidden sm:inline">Settings</span>
@@ -177,7 +164,7 @@ export default function App() {
                   variant="outline"
                   className="btn-interactive"
                   aria-label="Sign out"
-                  data-ocid="nav.secondary_button"
+                  data-ocid="dashboard.delete_button"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Sign out</span>
@@ -208,9 +195,7 @@ export default function App() {
                   onDeleteTask={deleteTask}
                 />
               )}
-              {currentView === "settings" && (
-                <ProfileView identity={identity} />
-              )}
+              {currentView === "settings" && <ProfileView identity={null} />}
             </div>
           </ViewTransition>
         </main>
@@ -220,7 +205,7 @@ export default function App() {
             <p>
               © {new Date().getFullYear()}. Built with ❤️ using{" "}
               <a
-                href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "")}`}
+                href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
@@ -232,5 +217,34 @@ export default function App() {
         </footer>
       </div>
     </BackgroundLayer>
+  );
+}
+
+export default function App() {
+  const [path, setPath] = useState(getPath);
+
+  const handleRouteChange = useCallback(() => {
+    setPath(getPath());
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener(ROUTE_CHANGE_EVENT, handleRouteChange);
+    window.addEventListener("popstate", handleRouteChange);
+    return () => {
+      window.removeEventListener(ROUTE_CHANGE_EVENT, handleRouteChange);
+      window.removeEventListener("popstate", handleRouteChange);
+    };
+  }, [handleRouteChange]);
+
+  if (path === "/login") {
+    return <LoginPage />;
+  }
+  if (path === "/signup") {
+    return <SignupPage />;
+  }
+  return (
+    <ProtectedRoute>
+      <DashboardApp />
+    </ProtectedRoute>
   );
 }
