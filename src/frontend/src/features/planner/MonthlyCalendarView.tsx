@@ -31,9 +31,7 @@ export default function MonthlyCalendarView({
     const newYear = currentMonth === 0 ? currentYear - 1 : currentYear;
     setCurrentMonth(newMonth);
     setCurrentYear(newYear);
-    if (onMonthChange) {
-      onMonthChange(newYear, newMonth);
-    }
+    if (onMonthChange) onMonthChange(newYear, newMonth);
   };
 
   const handleNextMonth = () => {
@@ -42,9 +40,7 @@ export default function MonthlyCalendarView({
     const newYear = currentMonth === 11 ? currentYear + 1 : currentYear;
     setCurrentMonth(newMonth);
     setCurrentYear(newYear);
-    if (onMonthChange) {
-      onMonthChange(newYear, newMonth);
-    }
+    if (onMonthChange) onMonthChange(newYear, newMonth);
   };
 
   const handleDayClick = (dateStr: string) => {
@@ -57,6 +53,7 @@ export default function MonthlyCalendarView({
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
+      {/* Month Navigation Header */}
       <div className="flex items-center justify-between bg-card/80 backdrop-blur-sm rounded-2xl px-6 py-4 border-2 border-border shadow-lg">
         <button
           type="button"
@@ -81,6 +78,7 @@ export default function MonthlyCalendarView({
         </button>
       </div>
 
+      {/* Calendar Grid */}
       <div
         className={`bg-card/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border-2 border-border shadow-lg ${
           transitionDirection === "left"
@@ -91,6 +89,7 @@ export default function MonthlyCalendarView({
         }`}
         onAnimationEnd={() => setTransitionDirection(null)}
       >
+        {/* Weekday Headers */}
         <div className="grid grid-cols-7 gap-2 mb-4">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
             <div
@@ -102,6 +101,7 @@ export default function MonthlyCalendarView({
           ))}
         </div>
 
+        {/* Calendar Days */}
         <div className="grid grid-cols-7 gap-2">
           {grid.map((day: CalendarDay) => {
             const dayHasTasks = hasTasks(day.dateStr, dayPlans);

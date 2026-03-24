@@ -1,113 +1,111 @@
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, Lock, LogIn, Mail } from "lucide-react";
-import { useState } from "react";
+import { Eye, EyeOff, LogIn, UserPlus } from "lucide-react";
+import { motion } from "motion/react";
+import { type FormEvent, useState } from "react";
 import BackgroundLayer from "../../components/background/BackgroundLayer";
-import { navigate } from "../../router";
-import { loginUser } from "./authUtils";
+import { getMonthBackgroundUrl } from "../background/monthBackgrounds";
 
-export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+interface LoginPageProps {
+  onNavigateToSignup: () => void;
+  onLoginSuccess: () => void;
+}
+
+export default function LoginPage({
+  onNavigateToSignup,
+  onLoginSuccess,
+}: LoginPageProps) {
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const currentMonth = new Date().getMonth() + 1;
+  const bgUrl = getMonthBackgroundUrl(currentMonth);
+
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setError("");
     setIsLoading(true);
-    await new Promise((r) => setTimeout(r, 300));
-    const result = loginUser(email, password);
-    setIsLoading(false);
-    if (result.success) {
-      navigate("/");
-    } else {
-      setError(result.error || "Login failed");
-    }
+    // Brief loading animation before redirecting to dashboard
+    setTimeout(() => {
+      setIsLoading(false);
+      onLoginSuccess();
+    }, 800);
   };
 
   return (
-    <BackgroundLayer imageUrl="/assets/image-1.png">
+    <BackgroundLayer imageUrl={bgUrl}>
       <div className="min-h-screen flex items-center justify-center p-4">
-        <Card className="w-full max-w-md glass-card-primary border-2 shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <CardHeader className="text-center space-y-4 pb-2">
-            {/* Logo */}
-            <div className="flex justify-center">
-              <img
-                src="/assets/generated/planday-creative-icon-transparent.dim_200x200.png"
-                alt="PlanDay"
-                className="h-16 w-16 md:hidden"
-              />
-              <img
-                src="/assets/generated/planday-creative-logo-transparent.dim_600x180.png"
-                alt="PlanDay"
-                className="hidden md:block h-16 object-contain"
-              />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-foreground tracking-tight">
-                Welcome Back
-              </h1>
-              <p className="text-muted-foreground mt-1 text-sm">
-                Sign in to your account
-              </p>
-            </div>
-          </CardHeader>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="w-full max-w-md"
+        >
+          {/* Logo */}
+          <div className="flex justify-center mb-8">
+            <img
+              src="/assets/generated/planday-creative-logo-transparent.dim_600x180.png"
+              alt="PlanDay"
+              className="h-16 object-contain drop-shadow-lg"
+            />
+          </div>
 
-          <CardContent className="space-y-5 pt-2">
-            {error && (
-              <Alert
-                variant="destructive"
-                className="animate-in fade-in slide-in-from-top-2 duration-300"
-                data-ocid="login.error_state"
-              >
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
+          {/* Card */}
+          <div
+            className="rounded-2xl border border-white/10 shadow-2xl p-8"
+            style={{
+              background: "rgba(15, 15, 25, 0.75)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+            }}
+          >
+            <h1 className="text-3xl font-bold text-white mb-1">Welcome Back</h1>
+            <p className="text-gray-400 text-sm mb-8">
+              Sign in to your PlanDay account
+            </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="login-email">Email</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="login-email"
-                    type="email"
-                    placeholder="you@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 transition-all duration-200 focus:ring-2"
-                    autoComplete="email"
-                    data-ocid="login.input"
-                  />
-                </div>
+                <Label
+                  htmlFor="email"
+                  className="text-gray-300 text-sm font-medium"
+                >
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  className="bg-gray-800/80 border-gray-700 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500/20 h-11"
+                  data-ocid="login.input"
+                />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="login-password">Password</Label>
+                <Label
+                  htmlFor="password"
+                  className="text-gray-300 text-sm font-medium"
+                >
+                  Password
+                </Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    id="login-password"
+                    id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10 transition-all duration-200 focus:ring-2"
                     autoComplete="current-password"
+                    placeholder="••••••••"
+                    className="bg-gray-800/80 border-gray-700 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500/20 h-11 pr-11"
                     data-ocid="login.input"
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
                     aria-label={
                       showPassword ? "Hide password" : "Show password"
                     }
+                    data-ocid="login.toggle"
                   >
                     {showPassword ? (
                       <EyeOff className="w-4 h-4" />
@@ -121,7 +119,8 @@ export default function LoginPage() {
               <div className="flex justify-end">
                 <button
                   type="button"
-                  className="text-sm text-primary hover:underline transition-colors"
+                  className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                  data-ocid="login.link"
                 >
                   Forgot Password?
                 </button>
@@ -130,12 +129,12 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-11 font-semibold btn-interactive shadow-lg transition-all duration-200"
+                className="w-full h-11 text-base font-semibold bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white border-0 shadow-lg transition-all duration-200"
                 data-ocid="login.submit_button"
               >
                 {isLoading ? (
                   <span className="flex items-center gap-2">
-                    <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     Signing in...
                   </span>
                 ) : (
@@ -147,40 +146,32 @@ export default function LoginPage() {
               </Button>
             </form>
 
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-border/50" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">or</span>
-              </div>
-            </div>
-
-            <p className="text-center text-sm text-muted-foreground">
+            <p className="mt-6 text-center text-sm text-gray-400">
               Don&apos;t have an account?{" "}
               <button
                 type="button"
-                onClick={() => navigate("/signup")}
-                className="text-primary font-medium hover:underline transition-colors"
+                onClick={onNavigateToSignup}
+                className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
                 data-ocid="login.link"
               >
+                <UserPlus className="w-3.5 h-3.5 inline mr-1" />
                 Create Account
               </button>
             </p>
+          </div>
 
-            <p className="text-center text-xs text-muted-foreground pt-2">
-              © {new Date().getFullYear()}. Built with ❤️ using{" "}
-              <a
-                href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
-                caffeine.ai
-              </a>
-            </p>
-          </CardContent>
-        </Card>
+          <p className="mt-6 text-center text-xs text-gray-500">
+            © {new Date().getFullYear()}. Built with ❤️ using{" "}
+            <a
+              href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:underline"
+            >
+              caffeine.ai
+            </a>
+          </p>
+        </motion.div>
       </div>
     </BackgroundLayer>
   );

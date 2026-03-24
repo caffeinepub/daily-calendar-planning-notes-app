@@ -13,7 +13,7 @@ export default function ViewTransition({
 }: ViewTransitionProps) {
   const [isEntering, setIsEntering] = useState(true);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: direction is only used in render, not needed in effect deps
+  // biome-ignore lint/correctness/useExhaustiveDependencies: viewKey intentionally triggers animation reset
   useEffect(() => {
     setIsEntering(true);
     const timer = setTimeout(() => setIsEntering(false), 50);

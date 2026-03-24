@@ -17,11 +17,13 @@ export function loadDayPlans(): DayPlansMap {
 
     const data: StorageData = JSON.parse(stored);
 
+    // Version check for future migrations
     if (data.version !== STORAGE_VERSION) {
       console.warn("Storage version mismatch, using empty state");
       return {};
     }
 
+    // Validate structure
     if (!data.dayPlans || typeof data.dayPlans !== "object") {
       return {};
     }
@@ -82,10 +84,12 @@ export function validateImportData(jsonString: string): {
   try {
     const data = JSON.parse(jsonString);
 
+    // Check version
     if (!data.version || typeof data.version !== "string") {
       return { valid: false, error: "Invalid data format: missing version" };
     }
 
+    // Check dayPlans structure
     if (!data.dayPlans || typeof data.dayPlans !== "object") {
       return {
         valid: false,
@@ -93,6 +97,7 @@ export function validateImportData(jsonString: string): {
       };
     }
 
+    // Basic validation of dayPlans structure
     for (const [date, plan] of Object.entries(data.dayPlans)) {
       if (typeof date !== "string") {
         return { valid: false, error: "Invalid data format: invalid date key" };
@@ -113,7 +118,7 @@ export function validateImportData(jsonString: string): {
     }
 
     return { valid: true, data: data as StorageData };
-  } catch (_err) {
+  } catch (_error) {
     return { valid: false, error: "Invalid JSON format" };
   }
 }

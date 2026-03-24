@@ -1,12 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, LogOut, Settings } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { ArrowLeft, CalendarIcon, LogOut, Settings } from "lucide-react";
+import { useEffect, useState } from "react";
 import ViewTransition from "./components/animations/ViewTransition";
 import BackgroundLayer from "./components/background/BackgroundLayer";
 import LoginPage from "./features/auth/LoginPage";
-import ProtectedRoute from "./features/auth/ProtectedRoute";
 import SignupPage from "./features/auth/SignupPage";
-import { getCurrentUser, logoutUser } from "./features/auth/authUtils";
 import {
   getBackgroundUrlForDate,
   getMonthBackgroundUrl,
@@ -19,12 +17,14 @@ import {
   applyMotionPreference,
   applyThemePreference,
 } from "./features/settings/preferencesStorage";
-import { ROUTE_CHANGE_EVENT, getPath, navigate } from "./router";
+import { useAuth } from "./hooks/useAuth";
 
-type PlannerView = "calendar" | "daily" | "settings";
+type View = "calendar" | "daily" | "settings";
+type AuthView = "login" | "signup";
 
-function DashboardApp() {
-  const [currentView, setCurrentView] = useState<PlannerView>("calendar");
+export default function App() {
+  const [currentView, setCurrentView] = useState<View>("calendar");
+  const [authView, setAuthView] = useState<AuthView>("login");
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [transitionDirection, setTransitionDirection] = useState<
@@ -36,7 +36,7 @@ function DashboardApp() {
 
   const { dayPlans, addTask, updateTask, deleteTask, loadFromStorage } =
     usePlannerStore();
-  const currentUser = getCurrentUser();
+  const { user, isAuthenticated, isLoaded, loginDirect, logout } = useAuth();
 
   useEffect(() => {
     loadFromStorage();
@@ -88,13 +88,50 @@ function DashboardApp() {
   };
 
   const handleSignOut = () => {
-    logoutUser();
-    navigate("/login");
+    logout();
+    setCurrentView("calendar");
+    setSelectedDate(null);
+    setAuthView("login");
+  };
+
+  const handleLoginSuccess = () => {
+    loginDirect();
+    setCurrentView("calendar");
   };
 
   const handleMonthChange = (_year: number, month: number) => {
     setDisplayedMonth(month);
   };
+
+  // Loading state while checking session
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+        <div className="text-center">
+          <CalendarIcon className="w-12 h-12 text-blue-500 mx-auto mb-4 animate-pulse" />
+          <p className="text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Auth screens
+  if (!isAuthenticated) {
+    if (authView === "signup") {
+      return (
+        <SignupPage
+          onNavigateToLogin={() => setAuthView("login")}
+          onSignupSuccess={() => setAuthView("login")}
+        />
+      );
+    }
+    return (
+      <LoginPage
+        onNavigateToSignup={() => setAuthView("signup")}
+        onLoginSuccess={handleLoginSuccess}
+      />
+    );
+  }
 
   return (
     <BackgroundLayer imageUrl={getBackgroundImage()}>
@@ -104,23 +141,15 @@ function DashboardApp() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <img
-                  src="/assets/generated/planday-creative-icon-transparent.dim_200x200.png"
-                  alt="PlanDay"
-                  className="w-8 h-8 md:hidden"
-                />
-                <img
                   src="/assets/generated/planday-creative-logo-transparent.dim_600x180.png"
                   alt="PlanDay"
-                  className="hidden md:block h-9 object-contain"
+                  className="h-9 object-contain"
                 />
               </div>
               <div className="flex items-center gap-2">
-                {currentUser && (
-                  <span className="hidden sm:inline text-sm text-muted-foreground mr-1">
-                    Hi,{" "}
-                    <strong className="text-foreground">
-                      {currentUser.name}
-                    </strong>
+                {user && (
+                  <span className="hidden sm:block text-sm text-muted-foreground mr-2">
+                    Hi, {user.name}
                   </span>
                 )}
                 {currentView === "daily" && selectedDate && (
@@ -129,7 +158,7 @@ function DashboardApp() {
                     variant="secondary"
                     className="btn-interactive"
                     aria-label="Back to calendar"
-                    data-ocid="dashboard.secondary_button"
+                    data-ocid="nav.secondary_button"
                   >
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     <span className="hidden sm:inline">Back to Calendar</span>
@@ -141,7 +170,7 @@ function DashboardApp() {
                     variant="secondary"
                     className="btn-interactive"
                     aria-label="Back to calendar"
-                    data-ocid="dashboard.secondary_button"
+                    data-ocid="nav.secondary_button"
                   >
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     <span className="hidden sm:inline">Back to Planner</span>
@@ -153,7 +182,7 @@ function DashboardApp() {
                     variant="outline"
                     className="btn-interactive"
                     aria-label="Open settings"
-                    data-ocid="dashboard.button"
+                    data-ocid="nav.button"
                   >
                     <Settings className="w-4 h-4 mr-2" />
                     <span className="hidden sm:inline">Settings</span>
@@ -164,7 +193,7 @@ function DashboardApp() {
                   variant="outline"
                   className="btn-interactive"
                   aria-label="Sign out"
-                  data-ocid="dashboard.delete_button"
+                  data-ocid="nav.button"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Sign out</span>
@@ -177,7 +206,9 @@ function DashboardApp() {
         <main className="container mx-auto px-4 py-8">
           <ViewTransition viewKey={currentView} direction={transitionDirection}>
             <div
-              className={`transition-opacity duration-150 ${isTransitioning ? "opacity-0" : "opacity-100"}`}
+              className={`transition-opacity duration-150 ${
+                isTransitioning ? "opacity-0" : "opacity-100"
+              }`}
             >
               {currentView === "calendar" && (
                 <MonthlyCalendarView
@@ -195,7 +226,7 @@ function DashboardApp() {
                   onDeleteTask={deleteTask}
                 />
               )}
-              {currentView === "settings" && <ProfileView identity={null} />}
+              {currentView === "settings" && <ProfileView user={user} />}
             </div>
           </ViewTransition>
         </main>
@@ -217,34 +248,5 @@ function DashboardApp() {
         </footer>
       </div>
     </BackgroundLayer>
-  );
-}
-
-export default function App() {
-  const [path, setPath] = useState(getPath);
-
-  const handleRouteChange = useCallback(() => {
-    setPath(getPath());
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener(ROUTE_CHANGE_EVENT, handleRouteChange);
-    window.addEventListener("popstate", handleRouteChange);
-    return () => {
-      window.removeEventListener(ROUTE_CHANGE_EVENT, handleRouteChange);
-      window.removeEventListener("popstate", handleRouteChange);
-    };
-  }, [handleRouteChange]);
-
-  if (path === "/login") {
-    return <LoginPage />;
-  }
-  if (path === "/signup") {
-    return <SignupPage />;
-  }
-  return (
-    <ProtectedRoute>
-      <DashboardApp />
-    </ProtectedRoute>
   );
 }

@@ -1,6 +1,6 @@
 export interface CalendarDay {
   date: Date;
-  dateStr: string;
+  dateStr: string; // ISO format YYYY-MM-DD
   isCurrentMonth: boolean;
   isToday: boolean;
 }
@@ -8,13 +8,14 @@ export interface CalendarDay {
 export function getMonthGrid(year: number, month: number): CalendarDay[] {
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
-  const startingDayOfWeek = firstDay.getDay();
+  const startingDayOfWeek = firstDay.getDay(); // 0 = Sunday
   const daysInMonth = lastDay.getDate();
 
   const grid: CalendarDay[] = [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
+  // Add leading days from previous month
   for (let i = 0; i < startingDayOfWeek; i++) {
     const date = new Date(year, month, -startingDayOfWeek + i + 1);
     grid.push({
@@ -25,6 +26,7 @@ export function getMonthGrid(year: number, month: number): CalendarDay[] {
     });
   }
 
+  // Add days of current month
   for (let day = 1; day <= daysInMonth; day++) {
     const date = new Date(year, month, day);
     const isToday = date.getTime() === today.getTime();
@@ -36,7 +38,8 @@ export function getMonthGrid(year: number, month: number): CalendarDay[] {
     });
   }
 
-  const remainingCells = 42 - grid.length;
+  // Add trailing days from next month to complete the grid
+  const remainingCells = 42 - grid.length; // 6 rows × 7 days
   for (let i = 1; i <= remainingCells; i++) {
     const date = new Date(year, month + 1, i);
     grid.push({

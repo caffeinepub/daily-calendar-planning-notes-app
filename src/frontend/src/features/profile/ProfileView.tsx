@@ -27,20 +27,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import type { Identity } from "@dfinity/agent";
 import {
   Bell,
   CalendarIcon,
   Database,
   Download,
   Palette,
-  Shield,
   Trash2,
   Upload,
+  User,
   Zap,
 } from "lucide-react";
 import { useRef, useState } from "react";
-import { getCurrentUser } from "../auth/authUtils";
+import type { Session } from "../auth/authStorage";
 import {
   clearPlannerData,
   exportPlannerData,
@@ -51,11 +50,10 @@ import { usePlannerStore } from "../planner/usePlannerStore";
 import { usePreferences } from "../settings/usePreferences";
 
 interface ProfileViewProps {
-  identity: Identity | null;
+  user: Session | null;
 }
 
-export default function ProfileView({ identity: _identity }: ProfileViewProps) {
-  const currentUser = getCurrentUser();
+export default function ProfileView({ user }: ProfileViewProps) {
   const { theme, motion, updateTheme, updateMotion } = usePreferences();
   const { replacePlannerData, clearAllData } = usePlannerStore();
   const [importError, setImportError] = useState<string | null>(null);
@@ -103,7 +101,7 @@ export default function ProfileView({ identity: _identity }: ProfileViewProps) {
         setImportSuccess(true);
         setTimeout(() => setImportSuccess(false), 3000);
       }
-    } catch (_err) {
+    } catch {
       setImportError("Failed to read file");
     }
 
@@ -123,7 +121,7 @@ export default function ProfileView({ identity: _identity }: ProfileViewProps) {
         <CardHeader className="bg-gradient-to-br from-primary/10 via-accent/10 to-primary/5 border-b">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
-              <Shield className="w-8 h-8 text-primary" />
+              <User className="w-8 h-8 text-primary" />
             </div>
             <div>
               <CardTitle className="text-3xl">Settings</CardTitle>
@@ -138,20 +136,28 @@ export default function ProfileView({ identity: _identity }: ProfileViewProps) {
           {/* Account Section */}
           <section className="settings-section space-y-4">
             <div className="flex items-center gap-3">
-              <Shield className="w-6 h-6 text-primary" />
+              <User className="w-6 h-6 text-primary" />
               <h3 className="text-xl font-semibold">Account</h3>
             </div>
-            <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-              {currentUser ? (
+            <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+              {user ? (
                 <>
-                  <p className="text-sm font-medium">
-                    <span className="text-muted-foreground">Name: </span>
-                    {currentUser.name}
-                  </p>
-                  <p className="text-sm font-medium">
-                    <span className="text-muted-foreground">Email: </span>
-                    {currentUser.email}
-                  </p>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Name
+                    </p>
+                    <p className="text-sm font-semibold text-foreground mt-0.5">
+                      {user.name}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Email
+                    </p>
+                    <p className="text-sm text-foreground mt-0.5">
+                      {user.email}
+                    </p>
+                  </div>
                 </>
               ) : (
                 <p className="text-sm text-muted-foreground">Not signed in</p>
@@ -177,11 +183,14 @@ export default function ProfileView({ identity: _identity }: ProfileViewProps) {
               </Label>
               <Select
                 value={theme}
-                onValueChange={(value) => updateTheme(value as any)}
+                onValueChange={(value) =>
+                  updateTheme(value as Parameters<typeof updateTheme>[0])
+                }
               >
                 <SelectTrigger
                   id="theme-select"
-                  className="settings-control w-full sm:w-64"
+                  className="settings-control w-full sm:w-64 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]"
+                  data-ocid="settings.select"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -208,11 +217,14 @@ export default function ProfileView({ identity: _identity }: ProfileViewProps) {
               </div>
               <Select
                 value={motion}
-                onValueChange={(value) => updateMotion(value as any)}
+                onValueChange={(value) =>
+                  updateMotion(value as Parameters<typeof updateMotion>[0])
+                }
               >
                 <SelectTrigger
                   id="motion-select"
-                  className="settings-control w-full sm:w-64"
+                  className="settings-control w-full sm:w-64 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]"
+                  data-ocid="settings.select"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -234,8 +246,9 @@ export default function ProfileView({ identity: _identity }: ProfileViewProps) {
               </div>
               <div className="bg-muted/30 rounded-lg p-4 border border-muted">
                 <p className="text-sm text-muted-foreground">
-                  Browser notifications are not currently enabled. All your
-                  planner data is stored locally and accessible anytime.
+                  Browser notifications are not currently enabled for this
+                  application. All your planner data is stored locally and
+                  accessible anytime you visit.
                 </p>
               </div>
             </div>
@@ -255,14 +268,18 @@ export default function ProfileView({ identity: _identity }: ProfileViewProps) {
 
             <div className="bg-accent/20 rounded-lg p-4 border border-accent/30">
               <p className="text-sm leading-relaxed">
-                <strong>Important:</strong> All your planner data is stored
-                locally in your browser's storage.
+                <strong>Important:</strong> All your planner data (tasks, notes,
+                and schedules) is stored locally in your browser&apos;s storage.
+                This means:
               </p>
               <ul className="list-disc list-inside mt-3 space-y-2 text-sm text-muted-foreground ml-2">
                 <li>Your data is private and never leaves your device</li>
                 <li>Data is specific to this browser and device</li>
                 <li>
                   Clearing browser data will remove your planner information
+                </li>
+                <li>
+                  Your data won&apos;t sync across different browsers or devices
                 </li>
               </ul>
             </div>
@@ -272,7 +289,8 @@ export default function ProfileView({ identity: _identity }: ProfileViewProps) {
                 <Button
                   onClick={handleExport}
                   variant="outline"
-                  className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95"
+                  className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
+                  data-ocid="settings.button"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Export Data
@@ -281,7 +299,8 @@ export default function ProfileView({ identity: _identity }: ProfileViewProps) {
                 <Button
                   onClick={handleImport}
                   variant="outline"
-                  className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95"
+                  className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
+                  data-ocid="settings.button"
                 >
                   <Upload className="w-4 h-4 mr-2" />
                   Import Data
@@ -298,7 +317,8 @@ export default function ProfileView({ identity: _identity }: ProfileViewProps) {
                   <AlertDialogTrigger asChild>
                     <Button
                       variant="destructive"
-                      className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95"
+                      className="settings-action-btn transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
+                      data-ocid="settings.delete_button"
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
                       Clear All Data
@@ -311,14 +331,21 @@ export default function ProfileView({ identity: _identity }: ProfileViewProps) {
                       </AlertDialogTitle>
                       <AlertDialogDescription>
                         This action cannot be undone. This will permanently
-                        delete all your planner data from this browser.
+                        delete all your planner data including all tasks and
+                        schedules from this browser.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogCancel
+                        className="transition-all duration-200 hover:scale-105 active:scale-95"
+                        data-ocid="settings.cancel_button"
+                      >
+                        Cancel
+                      </AlertDialogCancel>
                       <AlertDialogAction
                         onClick={handleClearData}
-                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-all duration-200 hover:scale-105 active:scale-95"
+                        data-ocid="settings.confirm_button"
                       >
                         Delete Everything
                       </AlertDialogAction>
@@ -328,13 +355,13 @@ export default function ProfileView({ identity: _identity }: ProfileViewProps) {
               </div>
 
               {importError && (
-                <Alert variant="destructive">
+                <Alert variant="destructive" data-ocid="settings.error_state">
                   <AlertDescription>{importError}</AlertDescription>
                 </Alert>
               )}
 
               {importSuccess && (
-                <Alert>
+                <Alert data-ocid="settings.success_state">
                   <AlertDescription>
                     Data imported successfully!
                   </AlertDescription>
@@ -350,13 +377,14 @@ export default function ProfileView({ identity: _identity }: ProfileViewProps) {
 
           <Separator />
 
+          {/* App Info Section */}
           <section
             className="settings-section space-y-4"
             style={{ animationDelay: "300ms" }}
           >
             <div className="flex items-center gap-3">
               <CalendarIcon className="w-6 h-6 text-primary" />
-              <h3 className="text-xl font-semibold">About PlanDay</h3>
+              <h3 className="text-xl font-semibold">About Daily Planner</h3>
             </div>
             <p className="text-muted-foreground leading-relaxed">
               A simple and elegant daily planning application to help you
