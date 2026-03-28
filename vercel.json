@@ -1,0 +1,8 @@
+{
+  "buildCommand": "cd src/frontend && npm install --legacy-peer-deps && npx vite build && cp env.json dist/",
+  "outputDirectory": "src/frontend/dist",
+  "framework": null,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
